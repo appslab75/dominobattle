@@ -69,9 +69,14 @@
                 </button>
             </div>
 
-            <span class="inline-block px-3.5 py-1 text-[10px] font-extrabold tracking-widest text-amber-700 dark:text-amber-400 uppercase bg-amber-50 dark:bg-amber-900/30 border border-amber-500/20 rounded-full mb-1">Official Championship Portal</span>
-            <h1 class="text-2xl font-extrabold gold-gradient-text tracking-tight">DOMINO BATTLE EXCLUSIVE</h1>
-            <p class="text-xs text-slate-500 mt-0.5 font-medium">Sistem Manajemen & Registrasi Kejuaraan Resmi</p>
+            <!-- Header 1 (Badge Atas) -->
+            <span id="header-badge-text" class="inline-block px-3.5 py-1 text-[10px] font-extrabold tracking-widest text-amber-700 dark:text-amber-400 uppercase bg-amber-50 dark:bg-amber-900/30 border border-amber-500/20 rounded-full mb-1">Official Championship Portal</span>
+            
+            <!-- Header 2 (Judul Utama) -->
+            <h1 id="header-main-title" class="text-2xl font-extrabold gold-gradient-text tracking-tight">DOMINO BATTLE EXCLUSIVE</h1>
+            
+            <!-- Header 3 (Subjudul) -->
+            <p id="header-subtitle" class="text-xs text-slate-500 mt-0.5 font-medium">Sistem Manajemen & Registrasi Kejuaraan Resmi</p>
             
             <!-- CONTAINER LOGO DINAMIS (1 ATAU 2 LOGO) -->
             <div id="header-logo-container" class="flex justify-center items-center gap-8 sm:gap-12 mt-4 mb-1 w-full px-4">
@@ -105,7 +110,7 @@
                         <span class="text-2xl">💎</span>
                         <div class="space-y-1">
                             <h2 class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-500">Instruksi Pembayaran</h2>
-                            <p class="text-xs text-slate-600 leading-relaxed font-medium">Silakan transfer biaya registrasi ke rekening panitia. Data yang masuk akan diverifikasi setelah bukti transfer diterima.</p>
+                            <p class="text-xs text-slate-600 leading-relaxed font-medium">Silakan transfer biaya registrasi ke rekening panitia. Data yang masuk akan diverifikasi setelah pembayaran diterima.</p>
                         </div>
                     </div>
                 </div>
@@ -235,6 +240,18 @@
                     </button>
                 </div>
 
+                <!-- Panel Ganti Teks Header -->
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 space-y-3 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-extrabold text-amber-800 dark:text-amber-500 uppercase tracking-wider">✍️ Pengaturan Teks Header</h3>
+                        <span class="text-[10px] bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-400 px-2 py-0.5 rounded font-extrabold">Header Portal</span>
+                    </div>
+                    <p class="text-[10px] text-slate-500">Sesuaikan teks badge, judul utama, dan subjudul pada bagian atas halaman.</p>
+                    <button onclick="bukaModalGantiHeaderText(); playClickSound();" class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center justify-center gap-1.5">
+                        <span>✏️</span> Konfigurasi & Ganti Teks Header
+                    </button>
+                </div>
+
                 <!-- Panel Manajemen Akun Berjenjang -->
                 <div id="section-manajemen-akun" class="hidden bg-white p-4 rounded-2xl border border-slate-200 space-y-3 shadow-sm">
                     <div class="flex justify-between items-center">
@@ -297,27 +314,20 @@
         </div>
     </div>
 
-    <!-- CUSTOM APPROVAL & BUKTI TRANSFER MODAL -->
-    <div id="approval-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm hidden p-4">
-        <div class="glass-card max-w-md w-full p-6 rounded-3xl border border-emerald-500/30 shadow-2xl space-y-4 bg-white">
+    <!-- CUSTOM TRANSFER PROOF MODAL -->
+    <div id="transfer-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm hidden p-4">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-amber-500/30 shadow-2xl space-y-4 bg-white">
             <div class="text-center">
-                <div class="text-3xl mb-1">💳</div>
-                <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Verifikasi & Bukti Transfer</h3>
-                <p class="text-[11px] text-slate-500 font-medium mt-0.5">Masukkan tautan/bukti transfer untuk menyetujui peserta ini.</p>
+                <div class="text-3xl mb-1">📎</div>
+                <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Link Bukti Transfer</h3>
+                <p class="text-[11px] text-slate-500 font-medium mt-0.5">Masukkan link bukti transfer peserta sebelum melakukan approve.</p>
             </div>
-            
-            <div class="space-y-3">
-                <input type="hidden" id="approval-target-id">
-                <div>
-                    <label class="text-[10px] text-slate-500 font-bold uppercase">Link Gambar / Bukti Transfer (Auto-Convert)</label>
-                    <input type="text" id="approval-bukti-input" placeholder="Tempel link Google Drive / URL gambar di sini..." class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600 font-medium">
-                    <p class="text-[9px] text-slate-400 mt-1">Link Google Drive akan otomatis dikonversi ke format penampil gambar yang stabil.</p>
-                </div>
+            <div>
+                <input type="text" id="input-link-transfer" placeholder="https://..." class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600 font-medium">
             </div>
-
             <div class="flex gap-2 pt-2">
-                <button type="button" onclick="tutupApprovalModal(); playClickSound();" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition">Batal</button>
-                <button type="button" onclick="prosesApproveDenganBukti(); playClickSound();" class="flex-1 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold shadow transition">Setujui Peserta</button>
+                <button type="button" onclick="tutupTransferModal(); playClickSound();" class="flex-1 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition">Batal</button>
+                <button type="button" onclick="prosesApproveDenganTransfer(); playClickSound();" class="flex-1 py-2.5 gold-btn rounded-xl text-xs font-bold">Simpan & Approve</button>
             </div>
         </div>
     </div>
@@ -352,6 +362,37 @@
             <div class="flex gap-2 pt-2">
                 <button type="button" onclick="tutupLogoModal(); playClickSound();" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition">Batal</button>
                 <button type="button" onclick="simpanKonfigurasiLogo(); playClickSound();" class="flex-1 py-2.5 gold-btn rounded-xl text-xs font-bold">Simpan Logo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM GANTI TEKS HEADER MODAL -->
+    <div id="header-text-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm hidden p-4">
+        <div class="glass-card max-w-md w-full p-6 rounded-3xl border border-amber-500/30 shadow-2xl space-y-4 bg-white">
+            <div class="text-center">
+                <div class="text-3xl mb-1">✍️</div>
+                <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider">Konfigurasi Teks Header</h3>
+                <p class="text-[11px] text-slate-500 font-medium mt-0.5">Sesuaikan teks badge, judul utama, dan subjudul pada bagian atas portal.</p>
+            </div>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase">Header 1 (Badge Atas)</label>
+                    <input type="text" id="input-header-1" placeholder="OFFICIAL CHAMPIONSHIP PORTAL" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600 font-medium">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase">Header 2 (Judul Utama)</label>
+                    <input type="text" id="input-header-2" placeholder="DOMINO BATTLE EXCLUSIVE" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600 font-medium">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-500 font-bold uppercase">Header 3 (Subjudul / Deskripsi)</label>
+                    <input type="text" id="input-header-3" placeholder="Sistem Manajemen & Registrasi Kejuaraan Resmi" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600 font-medium">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="tutupHeaderTextModal(); playClickSound();" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition">Batal</button>
+                <button type="button" onclick="simpanKonfigurasiHeaderText(); playClickSound();" class="flex-1 py-2.5 gold-btn rounded-xl text-xs font-bold">Simpan Teks</button>
             </div>
         </div>
     </div>
@@ -433,18 +474,7 @@
         let isRegistrationOpen = true;
         let globalDataPeserta = [];
         let confirmCallback = null;
-
-        // --- AUTO-CONVERT LINK GAMBAR (GOOGLE DRIVE / URL) ---
-        function convertImageUrl(url) {
-            if (!url) return '';
-            url = url.trim();
-            const match = url.match(/\/d\/([a-zA-Z0-9_-]+)|id=([a-zA-Z0-9_-]+)/);
-            if (match) {
-                const fileId = match[1] || match[2];
-                return `https://lh3.googleusercontent.com/d/${fileId}`;
-            }
-            return url;
-        }
+        let targetApproveId = null; // Variabel untuk menyimpan ID peserta yang sedang diapprove
 
         document.addEventListener("DOMContentLoaded", () => {
             const themeBtn = document.getElementById('theme-toggle-btn');
@@ -453,6 +483,7 @@
             loadProvinsi();
             cekStatusPendaftaran();
             muatKonfigurasiLogo();
+            muatKonfigurasiHeader();
             ambilDataPeserta();
 
             let savedSession = sessionStorage.getItem('championship_user_session');
@@ -462,6 +493,68 @@
             }
         });
 
+        // --- HELPER AUTO-CONVERT GOOGLE DRIVE LINK ---
+        function convertGoogleDriveLink(url) {
+            if (!url) return url;
+            let match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                return `https://lh3.googleusercontent.com/d/${match[1]}`;
+            }
+            return url;
+        }
+
+        // --- MODAL TRANSFER PROOF HANDLER ---
+        function bukaModalTransfer(id) {
+            playClickSound();
+            targetApproveId = id;
+            document.getElementById('input-link-transfer').value = '';
+            document.getElementById('transfer-modal').classList.remove('hidden');
+        }
+
+        function tutupTransferModal() {
+            document.getElementById('transfer-modal').classList.add('hidden');
+            targetApproveId = null;
+        }
+
+        async function prosesApproveDenganTransfer() {
+    playClickSound();
+    let rawLink = document.getElementById('input-link-transfer').value.trim();
+
+    if (!rawLink) {
+        showModal("Peringatan", "Harap masukkan link bukti transfer terlebih dahulu.", "⚠️");
+        return;
+    }
+
+    if (!targetApproveId) {
+        showModal("Error", "ID Peserta tidak valid. Silakan tutup modal dan klik tombol Approve sekali lagi.", "❌");
+        return;
+    }
+
+    // Auto-convert link Google Drive agar tidak broken image
+    let linkProses = convertGoogleDriveLink(rawLink);
+
+    try {
+        let { error } = await supabaseClient
+            .from('peserta')
+            .update({ 
+                status: 'terverifikasi',
+                bukti_transfer: linkProses 
+            })
+            .eq('id', targetApproveId);
+
+        if (error) {
+            showModal("Gagal", error.message, "❌");
+        } else {
+            tutupTransferModal();
+            await ambilDataPeserta();
+            showModal("Berhasil", "Peserta berhasil di-approve dan bukti transfer telah tersimpan.", "✨");
+        }
+    } catch (err) {
+        console.error("Error saat approve:", err);
+        showModal("Kesalahan Sistem", err.message || "Terjadi kesalahan jaringan atau koneksi database.", "❌");
+    }
+}
+
         // --- RENDER LOGO HEADER DINAMIS ---
         async function muatKonfigurasiLogo() {
             try {
@@ -470,19 +563,19 @@
                 
                 if (data) {
                     data.forEach(item => {
-                        if (item.kunci === 'logo_count') count = item.nilai;
-                        if (item.kunci === 'logo_1') l1 = item.nilai;
-                        if (item.kunci === 'logo_2') l2 = item.nilai;
+                        if (item.kunci === 'logo_count' && item.nilai) count = item.nilai;
+                        if (item.kunci === 'logo_1' && item.nilai) l1 = item.nilai;
+                        if (item.kunci === 'logo_2' && item.nilai) l2 = item.nilai;
                     });
                 }
 
                 let container = document.getElementById('header-logo-container');
                 if (count === '1') {
-                    container.innerHTML = `<img src="${convertImageUrl(l1)}" alt="Logo Utama" class="h-14 sm:h-20 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">`;
+                    container.innerHTML = `<img src="${l1}" alt="Logo Utama" class="h-14 sm:h-20 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">`;
                 } else {
                     container.innerHTML = `
-                        <img src="${convertImageUrl(l1)}" alt="Logo Kiri" class="h-12 sm:h-16 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
-                        <img src="${convertImageUrl(l2)}" alt="Logo Kanan" class="h-12 sm:h-16 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
+                        <img src="${l1}" alt="Logo Kiri" class="h-12 sm:h-16 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
+                        <img src="${l2}" alt="Logo Kanan" class="h-12 sm:h-16 w-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300">
                     `;
                 }
             } catch(e) {
@@ -493,7 +586,20 @@
             }
         }
 
-        function bukaModalGantiLogo() {
+        async function bukaModalGantiLogo() {
+            try {
+                let { data } = await supabaseClient.from('pengaturan').select('*').in('kunci', ['logo_count', 'logo_1', 'logo_2']);
+                if (data) {
+                    data.forEach(item => {
+                        if (item.kunci === 'logo_count') {
+                            document.getElementById('logo-count-select').value = item.nilai;
+                            toggleLogoInputs();
+                        }
+                        if (item.kunci === 'logo_1') document.getElementById('logo-url-1-input').value = item.nilai;
+                        if (item.kunci === 'logo_2') document.getElementById('logo-url-2-input').value = item.nilai;
+                    });
+                }
+            } catch(e) {}
             document.getElementById('logo-modal').classList.remove('hidden');
         }
 
@@ -519,6 +625,10 @@
             let l1 = document.getElementById('logo-url-1-input').value.trim();
             let l2 = document.getElementById('logo-url-2-input').value.trim();
 
+            // Auto-convert link Google Drive agar tidak broken
+            l1 = convertGoogleDriveLink(l1);
+            l2 = convertGoogleDriveLink(l2);
+
             await supabaseClient.from('pengaturan').upsert([{ kunci: 'logo_count', nilai: count }], { onConflict: 'kunci' });
             if (l1) await supabaseClient.from('pengaturan').upsert([{ kunci: 'logo_1', nilai: l1 }], { onConflict: 'kunci' });
             if (count === '2' && l2) await supabaseClient.from('pengaturan').upsert([{ kunci: 'logo_2', nilai: l2 }], { onConflict: 'kunci' });
@@ -526,6 +636,53 @@
             tutupLogoModal();
             muatKonfigurasiLogo();
             showModal("Berhasil", "Logo portal berhasil diperbarui.", "✨");
+        }
+
+        // --- RENDER TEKS HEADER DINAMIS ---
+        async function muatKonfigurasiHeader() {
+            try {
+                let { data } = await supabaseClient.from('pengaturan').select('*').in('kunci', ['header_text_1', 'header_text_2', 'header_text_3']);
+                let t1 = "OFFICIAL CHAMPIONSHIP PORTAL";
+                let t2 = "DOMINO BATTLE EXCLUSIVE";
+                let t3 = "Sistem Manajemen & Registrasi Kejuaraan Resmi";
+
+                if (data) {
+                    data.forEach(item => {
+                        if (item.kunci === 'header_text_1') t1 = item.nilai;
+                        if (item.kunci === 'header_text_2') t2 = item.nilai;
+                        if (item.kunci === 'header_text_3') t3 = item.nilai;
+                    });
+                }
+
+                document.getElementById('header-badge-text').textContent = t1;
+                document.getElementById('header-main-title').textContent = t2;
+                document.getElementById('header-subtitle').textContent = t3;
+            } catch(e) {}
+        }
+
+        function bukaModalGantiHeaderText() {
+            document.getElementById('input-header-1').value = document.getElementById('header-badge-text').textContent;
+            document.getElementById('input-header-2').value = document.getElementById('header-main-title').textContent;
+            document.getElementById('input-header-3').value = document.getElementById('header-subtitle').textContent;
+            document.getElementById('header-text-modal').classList.remove('hidden');
+        }
+
+        function tutupHeaderTextModal() {
+            document.getElementById('header-text-modal').classList.add('hidden');
+        }
+
+        async function simpanKonfigurasiHeaderText() {
+            let t1 = document.getElementById('input-header-1').value.trim();
+            let t2 = document.getElementById('input-header-2').value.trim();
+            let t3 = document.getElementById('input-header-3').value.trim();
+
+            if (t1) await supabaseClient.from('pengaturan').upsert([{ kunci: 'header_text_1', nilai: t1 }], { onConflict: 'kunci' });
+            if (t2) await supabaseClient.from('pengaturan').upsert([{ kunci: 'header_text_2', nilai: t2 }], { onConflict: 'kunci' });
+            if (t3) await supabaseClient.from('pengaturan').upsert([{ kunci: 'header_text_3', nilai: t3 }], { onConflict: 'kunci' });
+
+            tutupHeaderTextModal();
+            muatKonfigurasiHeader();
+            showModal("Berhasil", "Teks header portal berhasil diperbarui.", "✨");
         }
 
         function showModal(title, message, icon = '🏆') {
@@ -768,7 +925,7 @@
                 btn.disabled = false;
                 btn.textContent = "SUBMIT PENDAFTARAN";
             } else {
-                showModal("Registrasi Berhasil!", "Data pasangan Anda telah tercatat. Silakan lakukan transfer pembayaran untuk verifikasi.", "🎉");
+                showModal("Registrasi Berhasil!", "Data pasangan Anda telah tercatat. Silakan lakukan pembayaran untuk verifikasi.", "🎉");
                 document.getElementById('form-pendaftaran').reset();
                 btn.disabled = false;
                 btn.textContent = "SUBMIT PENDAFTARAN";
@@ -803,46 +960,46 @@
         }
 
         function renderDataPesertaPublik() {
-            let containerPublik = document.getElementById('list-peserta-publik');
-            let keyword = (document.getElementById('search-peserta')?.value || '').toLowerCase().trim();
+    let containerPublik = document.getElementById('list-peserta-publik');
+    let keyword = (document.getElementById('search-peserta')?.value || '').toLowerCase().trim();
 
-            let filtered = globalDataPeserta.filter(p => {
-                let idPasangan = formatIdPasangan(p.id).toLowerCase();
-                return idPasangan.includes(keyword) ||
-                       p.nama_pasangan.toLowerCase().includes(keyword) ||
-                       p.gardu_klub.toLowerCase().includes(keyword) ||
-                       p.kabupaten.toLowerCase().includes(keyword) ||
-                       p.kecamatan.toLowerCase().includes(keyword) ||
-                       p.desa.toLowerCase().includes(keyword);
-            });
+    let filtered = globalDataPeserta.filter(p => {
+        let idPasangan = formatIdPasangan(p.id).toLowerCase();
+        return idPasangan.includes(keyword) ||
+               p.nama_pasangan.toLowerCase().includes(keyword) ||
+               p.gardu_klub.toLowerCase().includes(keyword) ||
+               p.kabupaten.toLowerCase().includes(keyword) ||
+               p.kecamatan.toLowerCase().includes(keyword) ||
+               p.desa.toLowerCase().includes(keyword);
+    });
 
-            if (filtered.length === 0) {
-                containerPublik.innerHTML = '<div class="text-center glass-card p-6 rounded-2xl text-slate-500 text-xs font-medium">Tidak ada data peserta yang cocok dengan pencarian.</div>';
-                return;
-            }
+    if (filtered.length === 0) {
+        containerPublik.innerHTML = '<div class="text-center glass-card p-6 rounded-2xl text-slate-500 text-xs font-medium">Tidak ada data peserta yang cocok dengan pencarian.</div>';
+        return;
+    }
 
-            containerPublik.innerHTML = '';
-            filtered.forEach((p) => {
-                let badgeStatus = p.status === 'terverifikasi' 
-                    ? '<span class="text-[10px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full font-extrabold">PESERTA</span>'
-                    : '<span class="text-[10px] bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full font-extrabold">CALON PESERTA</span>';
+    containerPublik.innerHTML = '';
+    filtered.forEach((p) => {
+        let badgeStatus = p.status === 'terverifikasi' 
+            ? '<span class="text-[10px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full font-extrabold">PESERTA</span>'
+            : '<span class="text-[10px] bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full font-extrabold">CALON PESERTA</span>';
 
-                let card = document.createElement('div');
-                card.className = "glass-card p-4 rounded-2xl space-y-1.5 border border-slate-200 shadow-sm";
-                card.innerHTML = `
-                    <div class="flex justify-between items-start">
-                        <span class="text-xs font-extrabold text-amber-800 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/50">${formatIdPasangan(p.id)}</span>
-                        ${badgeStatus}
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">${p.nama_pasangan}</h3>
-                        <p class="text-xs font-semibold text-slate-600">Gardu: ${p.gardu_klub}</p>
-                        <p class="text-[10px] text-slate-400 mt-1 font-medium">Domisili: Kab. ${p.kabupaten}, Kec. ${p.kecamatan}, Desa/Kel. ${p.desa}</p>
-                    </div>
-                `;
-                containerPublik.appendChild(card);
-            });
-        }
+        let card = document.createElement('div');
+        card.className = "glass-card p-4 rounded-2xl space-y-1.5 border border-slate-200 shadow-sm";
+        card.innerHTML = `
+            <div class="flex justify-between items-start">
+                <span class="text-xs font-extrabold text-amber-800 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/50">${formatIdPasangan(p.id)}</span>
+                ${badgeStatus}
+            </div>
+            <div>
+                <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">${p.nama_pasangan}</h3>
+                <p class="text-xs font-semibold text-slate-600">Gardu: ${p.gardu_klub}</p>
+                <p class="text-[10px] text-slate-400 mt-1 font-medium">Domisili: Kab. ${p.kabupaten}, Kec. ${p.kecamatan}, Desa/Kel. ${p.desa}</p>
+            </div>
+        `;
+        containerPublik.appendChild(card);
+    });
+}
 
         function renderDataPesertaAdmin() {
             let containerAdmin = document.getElementById('list-peserta-admin');
@@ -873,8 +1030,11 @@
 
                 let tombolUbah = p.status === 'terverifikasi'
                     ? `<button onclick="ubahStatus(${p.id}, 'pending')" class="text-[10px] bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-500 px-3 py-1.5 rounded-lg font-bold border border-amber-200 dark:border-amber-800/50 hover:bg-amber-100 transition">Set Calon</button>`
-                    : `<button onclick="bukaApprovalModal(${p.id})" class="text-[10px] bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm transition">Approve Peserta</button>`;
+                    : `<button onclick="bukaModalTransfer(${p.id})" class="text-[10px] bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm transition">Approve Peserta</button>`;
+                
                 let tombolHapus = `<button onclick="konfirmasiHapusPeserta(${p.id}, '${p.nama_pasangan}')" class="text-[10px] bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-500 hover:bg-rose-100 px-3 py-1.5 rounded-lg font-bold border border-rose-200 dark:border-rose-800/50 transition">Hapus</button>`;
+
+                let linkBuktiAdmin = p.bukti_transfer ? `<a href="${p.bukti_transfer}" target="_blank" class="text-[10px] text-amber-600 underline font-semibold block mt-1">🔗 Lihat Bukti Transfer Terlampir</a>` : '';
 
                 let item = document.createElement('div');
                 item.className = "bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm";
@@ -885,43 +1045,11 @@
                     </div>
                     <p class="text-[10px] text-slate-600 font-medium">Gardu: ${p.gardu_klub} | WA: ${p.whatsapp}</p>
                     <p class="text-[10px] text-slate-400 font-medium">Domisili: Kab. ${p.kabupaten}, Kec. ${p.kecamatan}, Kel. ${p.desa}</p>
+                    ${linkBuktiAdmin}
                     <div class="pt-1 flex gap-2">${tombolUbah} ${tombolHapus}</div>
                 `;
                 containerAdmin.appendChild(item);
             });
-        }
-
-        // --- MODAL APPROVAL DENGAN BUKTI TRANSFER ---
-        function bukaApprovalModal(id) {
-            playClickSound();
-            document.getElementById('approval-target-id').value = id;
-            document.getElementById('approval-bukti-input').value = '';
-            document.getElementById('approval-modal').classList.remove('hidden');
-        }
-
-        function tutupApprovalModal() {
-            document.getElementById('approval-modal').classList.add('hidden');
-        }
-
-        async function prosesApproveDenganBukti() {
-            let id = document.getElementById('approval-target-id').value;
-            let buktiRaw = document.getElementById('approval-bukti-input').value.trim();
-            let buktiConverted = convertImageUrl(buktiRaw);
-
-            let updatePayload = { status: 'terverifikasi' };
-            if (buktiConverted) {
-                updatePayload.whatsapp = updatePayload.whatsapp;
-            }
-
-            let { error } = await supabaseClient.from('peserta').update({ status: 'terverifikasi' }).eq('id', id);
-
-            if (error) {
-                showModal("Gagal", error.message, "❌");
-            } else {
-                tutupApprovalModal();
-                showModal("Berhasil Diverifikasi", "Peserta berhasil disetujui dan status telah diperbarui menjadi PESERTA.", "🎉");
-                ambilDataPeserta();
-            }
         }
 
         // --- SISTEM OTORISASI & LOGIN ---
@@ -1126,6 +1254,7 @@
                 "Kecamatan": p.kecamatan,
                 "Desa/Kelurahan": p.desa,
                 "Status": p.status.toUpperCase(),
+                "Link Bukti Transfer": p.bukti_transfer || "-",
                 "Tanggal Daftar": p.created_at
             }));
 
