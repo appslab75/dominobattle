@@ -1,1 +1,1 @@
-# dominobattle.github.io
+# https://appslab75.github.io/dominobattle/
