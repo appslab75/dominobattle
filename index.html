@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domino Championship -  Official Registration</title>
+    <title>Domino Championship - VVIP Official Portal</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -26,7 +26,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #090d16; color: #f8fafc; }
-        .glass-card { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(234, 179, 8, 0.2); }
+        .glass-card { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(234, 179, 8, 0.2); }
         .gold-gradient-text { background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .gold-btn { background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%); color: #090d16; font-weight: 800; transition: all 0.3s ease; }
         .gold-btn:hover { background: linear-gradient(135deg, #fde047 0%, #eab308 100%); box-shadow: 0 0 25px rgba(234, 179, 8, 0.4); transform: translateY(-1px); }
@@ -35,13 +35,13 @@
 <body class="min-h-screen pb-16 selection:bg-amber-500 selection:text-slate-950">
 
     <!-- Header Mewah -->
-    <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-amber-500/20 shadow-2xl">
+    <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-amber-500/20 shadow-2xl">
         <div class="max-w-2xl mx-auto px-4 py-4 text-center">
-            <span class="inline-block px-3 py-1 text-[10px] font-extrabold tracking-widest text-amber-400 uppercase bg-amber-500/10 border border-amber-500/30 rounded-full mb-1"> Championship</span>
+            <span class="inline-block px-3 py-1 text-[10px] font-extrabold tracking-widest text-amber-400 uppercase bg-amber-500/10 border border-amber-500/30 rounded-full mb-1">VVIP Championship Portal</span>
             <h1 class="text-2xl font-extrabold gold-gradient-text tracking-wider">DOMINO BATTLE EXCLUSIVE</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Portal Registrasi Pasangan Resmi & Terverifikasi</p>
+            <p class="text-xs text-slate-400 mt-0.5">Sistem Manajemen & Registrasi Kejuaraan Resmi</p>
             
-            <!-- Tab Navigasi Mewah -->
+            <!-- Tab Navigasi -->
             <div class="flex justify-center gap-2 mt-4 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
                 <button onclick="switchTab('daftar')" id="tab-daftar" class="flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn shadow-lg transition">📝 REGISTRASI</button>
                 <button onclick="switchTab('peserta')" id="tab-peserta" class="flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition">👥 DAFTAR PESERTA</button>
@@ -53,81 +53,82 @@
 
         <!-- TAB: DAFTAR -->
         <section id="content-daftar" class="space-y-5">
-            <!-- Informasi Rekening VIP -->
-            <div class="glass-card rounded-3xl p-5 border-l-4 border-amber-400 shadow-xl relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
-                <div class="flex items-start gap-3">
-                    <span class="text-2xl">💎</span>
-                    <div class="space-y-1">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400">Instruksi Pembayaran </h2>
-                        <p class="text-xs text-slate-300 leading-relaxed">Silakan transfer biaya registrasi ke rekening <br><strong class="text-amber-300 text-sm">panitia</strong>. Data yang masuk akan diverifikasi setelah bukti transfer diterima.</p>
-                    </div>
-                </div>
+            <!-- Indikator Status Pendaftaran (Dinamis) -->
+            <div id="status-pendaftaran-banner" class="hidden glass-card rounded-3xl p-6 text-center space-y-3 border border-rose-500/30 bg-rose-950/10">
+                <div class="text-4xl">🔒</div>
+                <h2 class="text-base font-extrabold text-rose-400 uppercase tracking-wider">Pendaftaran Telah Ditutup</h2>
+                <p class="text-xs text-slate-300 leading-relaxed">Mohon maaf, sesi pendaftaran pasangan baru saat ini telah ditutup oleh Panitia Utama. Anda tetap dapat memantau daftar peserta yang lolos melalui menu <strong>Daftar Peserta</strong>.</p>
             </div>
 
-            <!-- Form Pendaftaran Mewah -->
-            <form id="form-pendaftaran" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-5" onsubmit="kirimPendaftaran(event)">
-                
-                <!-- Nama Pasangan -->
-                <div class="space-y-1.5">
-                    <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nama Pasangan (Wajib Format: NAMA1/NAMA2) *</label>
-                    <input type="text" id="nama_pasangan" required placeholder="CONTOH: BUDI SANTOSO / ANDI WIJAYA" oninput="this.value = this.value.toUpperCase()" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold uppercase text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
-                    <p class="text-[10px] text-slate-500">Gunakan tanda garis miring (/) tanpa spasi berlebih pemisah antar pemain.</p>
-                </div>
-
-                <!-- Nama Gardu/Klub -->
-                <div class="space-y-1.5">
-                    <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nama Gardu / Klub *</label>
-                    <input type="text" id="gardu_klub" required placeholder="GARDU MAWAR " class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold uppercase text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
-                </div>
-
-                <!-- WhatsApp -->
-                <div class="space-y-1.5">
-                    <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nomor WhatsApp Aktif *</label>
-                    <input type="tel" id="whatsapp" required placeholder="081234567890" oninput="this.value = this.value.replace(/\D/g, '')" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
-                    <p class="text-[10px] text-slate-500">Hanya angka numerik, diawali 0 atau 62 (10-13 digit).</p>
-                </div>
-
-                <!-- Wilayah Domisili -->
-                <div class="space-y-3 pt-2 border-t border-slate-800/80">
-                    <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Wilayah Domisili Domestik</label>
-                    
-                    <div class="grid grid-cols-1 gap-3">
-                        <div>
-                            <label class="text-[11px] text-slate-400 font-medium">Provinsi</label>
-                            <select id="provinsi" required onchange="loadKabupaten()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400">
-                                <option value="">Memuat Provinsi...</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="text-[11px] text-slate-400 font-medium">Kabupaten / Kota</label>
-                            <select id="kabupaten" required disabled onchange="loadKecamatan()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
-                                <option value="">Pilih Provinsi Dahulu</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="text-[11px] text-slate-400 font-medium">Kecamatan</label>
-                            <select id="kecamatan" required disabled onchange="loadDesa()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
-                                <option value="">Pilih Kabupaten Dahulu</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="text-[11px] text-slate-400 font-medium">Desa / Kelurahan</label>
-                            <select id="desa" required disabled class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
-                                <option value="">Pilih Kecamatan Dahulu</option>
-                            </select>
+            <!-- Konten Form Utama -->
+            <div id="wrapper-form-pendaftaran" class="space-y-5">
+                <!-- Info Rekening -->
+                <div class="glass-card rounded-3xl p-5 border-l-4 border-amber-400 shadow-xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-2xl">💎</span>
+                        <div class="space-y-1">
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400">Instruksi Pembayaran VVIP</h2>
+                            <p class="text-xs text-slate-300 leading-relaxed">Transfer biaya registrasi ke Rekening Resmi: <br><strong class="text-amber-300 text-sm">BCA 8880123456 a.n Panitia Utama</strong>. Status akan diverifikasi admin setelah bukti diterima.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Tombol Submit Mewah -->
-                <button type="submit" id="btn-submit" class="w-full py-4 gold-btn rounded-2xl shadow-xl uppercase tracking-wider text-sm mt-4">
-                    SUBMIT PENDAFTARAN 
-                </button>
-            </form>
+                <!-- Form -->
+                <form id="form-pendaftaran" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-5" onsubmit="kirimPendaftaran(event)">
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nama Pasangan (Wajib Format: NAMA1/NAMA2) *</label>
+                        <input type="text" id="nama_pasangan" required placeholder="CONTOH: BUDI SANTOSO / ANDI WIJAYA" oninput="this.value = this.value.toUpperCase()" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold uppercase text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
+                        <p class="text-[10px] text-slate-500">Wajib 2 nama dipisahkan garis miring tanpa spasi berlebih.</p>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nama Gardu / Klub *</label>
+                        <input type="text" id="gardu_klub" required placeholder="GARDU MAWAR VVIP" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold uppercase text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nomor WhatsApp Aktif *</label>
+                        <input type="tel" id="whatsapp" required placeholder="081234567890" oninput="this.value = this.value.replace(/\D/g, '')" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
+                        <p class="text-[10px] text-slate-500">Hanya angka numerik, diawali 0 atau 62 (10-13 digit).</p>
+                    </div>
+
+                    <!-- Wilayah -->
+                    <div class="space-y-3 pt-2 border-t border-slate-800/80">
+                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Wilayah Domisili Domestik</label>
+                        <div class="grid grid-cols-1 gap-3">
+                            <div>
+                                <label class="text-[11px] text-slate-400 font-medium">Provinsi</label>
+                                <select id="provinsi" required onchange="loadKabupaten()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400">
+                                    <option value="">Memuat Provinsi...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-slate-400 font-medium">Kabupaten / Kota</label>
+                                <select id="kabupaten" required disabled onchange="loadKecamatan()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
+                                    <option value="">Pilih Provinsi Dahulu</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-slate-400 font-medium">Kecamatan</label>
+                                <select id="kecamatan" required disabled onchange="loadDesa()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
+                                    <option value="">Pilih Kabupaten Dahulu</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[11px] text-slate-400 font-medium">Desa / Kelurahan</label>
+                                <select id="desa" required disabled class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
+                                    <option value="">Pilih Kecamatan Dahulu</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btn-submit" class="w-full py-4 gold-btn rounded-2xl shadow-xl uppercase tracking-wider text-sm mt-4">
+                        SUBMIT PENDAFTARAN VVIP
+                    </button>
+                </form>
+            </div>
         </section>
 
         <!-- TAB: PESERTA -->
@@ -138,16 +139,26 @@
                     <p class="text-xs text-slate-400" id="info-jumlah-peserta">Sinkronisasi data...</p>
                 </div>
                 <div id="admin-action-container">
-                    <button onclick="bukaLoginAdmin()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3.5 py-2 rounded-xl font-bold transition">🔒 Panel Admin</button>
+                    <button onclick="bukaLoginAdmin()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3.5 py-2 rounded-xl font-bold transition">🔒 Login Admin</button>
                 </div>
             </div>
 
-            <!-- Panel Admin  -->
+            <!-- Panel Kontrol Administrator -->
             <div id="panel-admin-tools" class="hidden glass-card border-amber-500/40 rounded-3xl p-5 space-y-3 bg-amber-950/10">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs font-extrabold text-amber-400 uppercase tracking-widest">⚡ Kontrol Panel Administrator</span>
+                    <span class="text-xs font-extrabold text-amber-400 uppercase tracking-widest">⚡ Super Admin Control Center</span>
                     <button onclick="logoutAdmin()" class="text-xs bg-rose-500/20 text-rose-300 border border-rose-500/40 px-3 py-1.5 rounded-lg font-bold hover:bg-rose-500/30 transition">Keluar</button>
                 </div>
+                
+                <!-- Toggle Buka/Tutup Pendaftaran -->
+                <div class="bg-slate-950/60 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-bold text-white">Status Pendaftaran Publik</p>
+                        <p class="text-[10px] text-slate-400" id="label-status-toggle">Memeriksa status...</p>
+                    </div>
+                    <button id="btn-toggle-reg" onclick="togglePendaftaran()" class="px-4 py-2 rounded-xl text-xs font-extrabold transition shadow">Ubah Status</button>
+                </div>
+
                 <button onclick="downloadExcel()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
                     <span>📥</span> Unduh Laporan Excel (.xlsx)
                 </button>
@@ -161,24 +172,35 @@
 
     </main>
 
-    <!-- CUSTOM MODAL  (Pengganti Alert/Prompt Jadul) -->
+    <!-- CUSTOM MODAL VVIP -->
     <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
-        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-amber-500/40 shadow-2xl text-center space-y-4 animate-scale">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-amber-500/40 shadow-2xl text-center space-y-4">
             <div id="modal-icon" class="text-4xl">👑</div>
-            <h3 id="modal-title" class="text-base font-extrabold text-amber-300">Pemberitahuan </h3>
+            <h3 id="modal-title" class="text-base font-extrabold text-amber-300">Pemberitahuan VVIP</h3>
             <p id="modal-message" class="text-xs text-slate-300 leading-relaxed">Pesan sistem...</p>
-            <div id="modal-action-area" class="pt-2">
+            <div class="pt-2">
                 <button onclick="tutupModal()" class="w-full py-3 gold-btn rounded-xl text-xs uppercase tracking-wider">Mengerti</button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM ADMIN PROMPT MODAL -->
+    <!-- CUSTOM ADMIN LOGIN MODAL (Mendukung Email Super Admin) -->
     <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
         <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-amber-500/40 shadow-2xl space-y-4">
-            <h3 class="text-sm font-extrabold text-amber-300 uppercase tracking-wider text-center">🔐 Otorisasi Admin</h3>
-            <p class="text-xs text-slate-400 text-center">Masukkan sandi keamanan khusus administrator.</p>
-            <input type="password" id="admin-password-input" placeholder="••••••••" class="w-full px-4 py-3 bg-slate-950 border border-slate-800 rounded-xl text-sm text-center text-white outline-none focus:border-amber-400">
+            <h3 class="text-sm font-extrabold text-amber-300 uppercase tracking-wider text-center">🔐 Otorisasi Super Admin</h3>
+            <p class="text-xs text-slate-400 text-center">Masukkan akun kredensial administrator Anda.</p>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="text-[10px] text-slate-400 font-bold uppercase">Username / Email</label>
+                    <input type="text" id="admin-user-input" placeholder="appslab75@gmail.com" class="w-full mt-1 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 font-bold uppercase">Password</label>
+                    <input type="password" id="admin-password-input" placeholder="••••••••" class="w-full mt-1 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white outline-none focus:border-amber-400">
+                </div>
+            </div>
+
             <div class="flex gap-2 pt-2">
                 <button onclick="tutupAdminModal()" class="flex-1 py-2.5 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Batal</button>
                 <button onclick="prosesLoginAdmin()" class="flex-1 py-2.5 gold-btn rounded-xl text-xs font-bold">Masuk</button>
@@ -192,11 +214,16 @@
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpYnNybWdvaHJxbXBucGZ2bHZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MzU2NzIsImV4cCI6MjEwNTAxMTY3Mn0.ZNRFxLA_3CBXx5hqIG6jkZkJKUrX1ELDjeK5e4e2nRg"; 
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        const ADMIN_PASSWORD_RAHASIA = "admin123"; 
+        
+        // Kredensial Super Admin Resmi
+        const SUPER_ADMIN_USER = "appslab75@gmail.com";
+        const SUPER_ADMIN_PASS = "CCReza@1275";
         let isAdminLoggedIn = false;
+        let isRegistrationOpen = true;
 
         document.addEventListener("DOMContentLoaded", () => {
             loadProvinsi();
+            cekStatusPendaftaran();
             ambilDataPeserta();
         });
 
@@ -226,7 +253,54 @@
             }
         }
 
-        // --- API WILAYAH V2 TERBARU (STABIL) ---
+        // --- CEK STATUS BUKA/TUTUP PENDAFTARAN ---
+        async function cekStatusPendaftaran() {
+            try {
+                let { data, error } = await supabaseClient.from('pengaturan').select('*').eq('kunci', 'buka_pendaftaran').single();
+                if (data) {
+                    isRegistrationOpen = data.nilai === 'true';
+                }
+            } catch (e) {
+                isRegistrationOpen = true; // Default buka jika belum diset
+            }
+
+            let banner = document.getElementById('status-pendaftaran-banner');
+            let formWrap = document.getElementById('wrapper-form-pendaftaran');
+            let toggleBtn = document.getElementById('btn-toggle-reg');
+            let labelToggle = document.getElementById('label-status-toggle');
+
+            if (isRegistrationOpen) {
+                banner.classList.add('hidden');
+                formWrap.classList.remove('hidden');
+                if(toggleBtn) {
+                    toggleBtn.textContent = "Tutup Pendaftaran";
+                    toggleBtn.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-rose-600 text-white hover:bg-rose-500 transition shadow";
+                    labelToggle.textContent = "Status saat ini: TERBUKA (Publik dapat mendaftar)";
+                }
+            } else {
+                banner.classList.remove('hidden');
+                formWrap.classList.add('hidden');
+                if(toggleBtn) {
+                    toggleBtn.textContent = "Buka Pendaftaran";
+                    toggleBtn.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white hover:bg-emerald-500 transition shadow";
+                    labelToggle.textContent = "Status saat ini: DITUTUP (Formulir terkunci)";
+                }
+            }
+        }
+
+        async function togglePendaftaran() {
+            let statusTujuan = isRegistrationOpen ? 'false' : 'true';
+            let { error } = await supabaseClient.from('pengaturan').update({ nilai: statusTujuan }).eq('kunci', 'buka_pendaftaran');
+            
+            if (error) {
+                showModal("Gagal", "Gagal mengubah status pendaftaran: " + error.message, "❌");
+            } else {
+                cekStatusPendaftaran();
+                showModal("Berhasil", isRegistrationOpen ? "Pendaftaran berhasil ditutup." : "Pendaftaran berhasil dibuka kembali.", "⚡");
+            }
+        }
+
+        // --- API WILAYAH V2 ---
         async function loadProvinsi() {
             try {
                 let res = await fetch('https://www.emsifa.com/api-wilayah-indonesia/v2/provinces.json');
@@ -240,21 +314,17 @@
                     opt.textContent = p.name;
                     select.appendChild(opt);
                 });
-            } catch (e) {
-                showModal("Kendala Sistem", "Gagal memuat data provinsi. Periksa koneksi internet Anda.", "⚠️");
-            }
+            } catch (e) {}
         }
 
         async function loadKabupaten() {
             let provSelect = document.getElementById('provinsi');
             let provId = provSelect.options[provSelect.selectedIndex].getAttribute('data-id');
             let kabSelect = document.getElementById('kabupaten');
-            
             kabSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
             kabSelect.disabled = true;
             resetSelect('kecamatan', 'Pilih Kecamatan Dahulu');
             resetSelect('desa', 'Pilih Desa Dahulu');
-
             if(!provId) return;
 
             try {
@@ -275,11 +345,9 @@
             let kabSelect = document.getElementById('kabupaten');
             let kabId = kabSelect.options[kabSelect.selectedIndex].getAttribute('data-id');
             let kecSelect = document.getElementById('kecamatan');
-            
             kecSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
             kecSelect.disabled = true;
             resetSelect('desa', 'Pilih Desa Dahulu');
-
             if(!kabId) return;
 
             try {
@@ -300,10 +368,8 @@
             let kecSelect = document.getElementById('kecamatan');
             let kecId = kecSelect.options[kecSelect.selectedIndex].getAttribute('data-id');
             let desaSelect = document.getElementById('desa');
-            
             desaSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
             desaSelect.disabled = true;
-
             if(!kecId) return;
 
             try {
@@ -325,23 +391,25 @@
             el.disabled = true;
         }
 
-        // --- VALIDASI & KIRIM PENDAFTARAN ---
+        // --- KIRIM PENDAFTARAN ---
         async function kirimPendaftaran(e) {
             e.preventDefault();
+            if (!isRegistrationOpen) {
+                showModal("Ditutup", "Pendaftaran saat ini sedang ditutup.", "⚠️");
+                return;
+            }
 
             let rawNama = document.getElementById('nama_pasangan').value.trim();
             let rawWA = document.getElementById('whatsapp').value.trim();
 
-            // Validasi Nama Pasangan: Wajib ada garis miring (/) dan minimal 2 bagian nama
             if (!rawNama.includes('/') || rawNama.split('/').length < 2 || rawNama.split('/').some(n => n.trim().length < 2)) {
                 showModal("Validasi Gagal", "Format Nama Pasangan wajib terdiri dari 2 nama dipisahkan garis miring (Contoh: BUDI / ANDI).", "⚠️");
                 return;
             }
 
-            // Validasi WhatsApp: Harus angka, panjang 10-13 digit, diawali 0 atau 62
             let waPattern = /^(0|62)\d{9,12}$/;
             if (!waPattern.test(rawWA)) {
-                showModal("Validasi WhatsApp", "Nomor WhatsApp tidak valid. Pastikan berupa angka aktif diawali 0 atau 62 (10-13 digit).", "⚠️");
+                showModal("Validasi WhatsApp", "Nomor WhatsApp tidak valid (harus angka diawali 0 atau 62, 10-13 digit).", "⚠️");
                 return;
             }
 
@@ -365,12 +433,12 @@
             if (error) {
                 showModal("Gagal Mengirim", error.message, "❌");
                 btn.disabled = false;
-                btn.textContent = "SUBMIT PENDAFTARAN ";
+                btn.textContent = "SUBMIT PENDAFTARAN VVIP";
             } else {
-                showModal("Registrasi Berhasil!", "Data pasangan Anda telah tercatat. Silakan lakukan transfer pembayaran agar segera disetujui Admin.", "🎉");
+                showModal("Registrasi Berhasil!", "Data pasangan Anda telah tercatat. Silakan lakukan transfer pembayaran untuk verifikasi.", "🎉");
                 document.getElementById('form-pendaftaran').reset();
                 btn.disabled = false;
-                btn.textContent = "SUBMIT PENDAFTARAN ";
+                btn.textContent = "SUBMIT PENDAFTARAN VVIP";
                 switchTab('peserta');
             }
         }
@@ -402,14 +470,14 @@
             container.innerHTML = '';
             tampilanData.forEach((p, index) => {
                 let badgeStatus = p.status === 'terverifikasi' 
-                    ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-extrabold">TERVERIFIKASI </span>'
+                    ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-extrabold">TERVERIFIKASI VVIP</span>'
                     : '<span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-full font-extrabold">PENDING PEMBAYARAN</span>';
 
                 let adminActions = '';
                 if (isAdminLoggedIn) {
                     let tombolUbah = p.status === 'terverifikasi'
                         ? `<button onclick="ubahStatus(${p.id}, 'pending')" class="text-[10px] bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-lg font-bold border border-amber-500/40">Set Pending</button>`
-                        : `<button onclick="ubahStatus(${p.id}, 'terverifikasi')" class="text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-bold shadow">Approve </button>`;
+                        : `<button onclick="ubahStatus(${p.id}, 'terverifikasi')" class="text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-bold shadow">Approve VVIP</button>`;
                     let tombolHapus = `<button onclick="hapusPeserta(${p.id})" class="text-[10px] bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 px-3 py-1.5 rounded-lg font-bold border border-rose-500/40">Hapus</button>`;
                     adminActions = `<div class="mt-3 pt-3 border-t border-slate-800 flex gap-2">${tombolUbah} ${tombolHapus}</div>`;
                 }
@@ -433,8 +501,9 @@
             });
         }
 
-        // --- SISTEM ADMIN MODAL ---
+        // --- OTORISASI SUPER ADMIN ---
         function bukaLoginAdmin() {
+            document.getElementById('admin-user-input').value = '';
             document.getElementById('admin-password-input').value = '';
             document.getElementById('admin-modal').classList.remove('hidden');
         }
@@ -444,16 +513,19 @@
         }
 
         function prosesLoginAdmin() {
+            let usr = document.getElementById('admin-user-input').value.trim();
             let pwd = document.getElementById('admin-password-input').value;
-            if (pwd === ADMIN_PASSWORD_RAHASIA) {
+
+            if (usr === SUPER_ADMIN_USER && pwd === SUPER_ADMIN_PASS) {
                 isAdminLoggedIn = true;
                 tutupAdminModal();
                 document.getElementById('admin-action-container').classList.add('hidden');
                 document.getElementById('panel-admin-tools').classList.remove('hidden');
-                showModal("Akses Diterima", "Anda berhasil masuk sebagai Administrator .", "⚡");
+                cekStatusPendaftaran();
+                showModal("Akses Diterima", "Selamat datang, Super Admin utama.", "⚡");
                 ambilDataPeserta();
             } else {
-                showModal("Akses Ditolak", "Sandi administrator yang Anda masukkan salah.", "❌");
+                showModal("Akses Ditolak", "Username atau Password Super Admin salah.", "❌");
             }
         }
 
@@ -461,7 +533,7 @@
             isAdminLoggedIn = false;
             document.getElementById('admin-action-container').classList.remove('hidden');
             document.getElementById('panel-admin-tools').classList.add('hidden');
-            showModal("Keluar Admin", "Sesi administrator telah diakhiri.", "🔒");
+            showModal("Keluar", "Sesi administrator telah diakhiri.", "🔒");
             ambilDataPeserta();
         }
 
@@ -475,7 +547,7 @@
         }
 
         async function hapusPeserta(id) {
-            if (confirm("Yakin ingin menghapus data peserta ini dari server?")) {
+            if (confirm("Yakin ingin menghapus peserta ini dari database?")) {
                 let { error } = await supabaseClient.from('peserta').delete().eq('id', id);
                 if (error) {
                     showModal("Gagal", error.message, "❌");
@@ -507,8 +579,8 @@
 
             let worksheet = XLSX.utils.json_to_sheet(dataExcel);
             let workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Data  Peserta Domino");
-            XLSX.writeFile(workbook, "Data__Domino_Championship.xlsx");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Data VVIP Peserta Domino");
+            XLSX.writeFile(workbook, "Data_VVIP_Domino_Championship.xlsx");
         }
     </script>
 </body>
