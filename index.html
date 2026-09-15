@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domino Championship - Pendaftaran Resmi</title>
+    <!-- Tailwind CSS untuk Desain Modern -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- SheetJS untuk Export Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- Header & Navigasi Tab -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-2xl mx-auto px-4 py-4 text-center">
+            <h1 class="text-xl font-bold text-indigo-900 tracking-wider">DOMINO CHAMPIONSHIP</h1>
+            <p class="text-xs text-gray-500 mt-0.5">Formulir Registrasi Pasangan Resmi</p>
+            
+            <!-- Tombol Navigasi -->
+            <div class="flex justify-center gap-2 mt-4 bg-gray-100 p-1 rounded-xl">
+                <button onclick="switchTab('daftar')" id="tab-daftar" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition">📝 Daftar</button>
+                <button onclick="switchTab('peserta')" id="tab-peserta" class="flex-1 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:text-indigo-600 transition">👥 Peserta</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto px-4 mt-6">
+
+        <!-- KONTEN TAB: DAFTAR -->
+        <section id="content-daftar" class="space-y-4">
+            <!-- Informasi Rekening / Instruksi Bayar -->
+            <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-4 text-sm text-indigo-900">
+                <p class="font-bold mb-1">💡 Informasi Pendaftaran:</p>
+                <p class="text-xs text-indigo-700 leading-relaxed">Silakan transfer biaya pendaftaran ke rekening <strong>panitia domino</strong>. Setelah mengisi formulir ini, status Anda akan *Pending* dan akan diverifikasi oleh Admin setelah pembayaran diterima.</p>
+            </div>
+
+            <!-- Form Pendaftaran -->
+            <form id="form-pendaftaran" class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 space-y-4" onsubmit="kirimPendaftaran(event)">
+                
+                <!-- Nama Pasangan -->
+                <div class="border-l-4 border-blue-500 pl-3 py-1">
+                    <label class="block text-xs font-bold text-gray-600 uppercase">Nama Pasangan *</label>
+                    <input type="text" id="nama_pasangan" required placeholder="BUDI / ANDI" class="w-full mt-1 px-3 py-2 border rounded-lg text-sm bg-gray-50 uppercase focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+                    <span class="text-[10px] text-gray-400">Wajib dipisahkan dengan garis miring ( / )</span>
+                </div>
+
+                <!-- Nama Gardu/Klub -->
+                <div class="border-l-4 border-purple-500 pl-3 py-1">
+                    <label class="block text-xs font-bold text-gray-600 uppercase">Nama Gardu / Klub *</label>
+                    <input type="text" id="gardu_klub" required placeholder="GARDU MAWAR" class="w-full mt-1 px-3 py-2 border rounded-lg text-sm bg-gray-50 uppercase focus:bg-white focus:ring-2 focus:ring-purple-500 outline-none">
+                </div>
+
+                <!-- WhatsApp -->
+                <div class="border-l-4 border-emerald-500 pl-3 py-1">
+                    <label class="block text-xs font-bold text-gray-600 uppercase">Nomor WhatsApp *</label>
+                    <input type="tel" id="whatsapp" required placeholder="08xxxxxxxxxx" class="w-full mt-1 px-3 py-2 border rounded-lg text-sm bg-gray-50 uppercase focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+
+                <!-- Wilayah Domisili (Dropdown Bertingkat) -->
+                <div class="border-l-4 border-amber-500 pl-3 py-1 space-y-3">
+                    <label class="block text-xs font-bold text-gray-600 uppercase">Wilayah Domisili</label>
+                    
+                    <div>
+                        <label class="text-[11px] text-gray-500 font-medium">Provinsi</label>
+                        <select id="provinsi" required onchange="loadKabupaten()" class="w-full mt-0.5 px-3 py-2 border rounded-lg text-sm bg-gray-50 outline-none">
+                            <option value="">Pilih Provinsi</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[11px] text-gray-500 font-medium">Kabupaten / Kota</label>
+                        <select id="kabupaten" required disabled onchange="loadKecamatan()" class="w-full mt-0.5 px-3 py-2 border rounded-lg text-sm bg-gray-50 outline-none disabled:bg-gray-100">
+                            <option value="">Pilih Kabupaten/Kota</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[11px] text-gray-500 font-medium">Kecamatan</label>
+                        <select id="kecamatan" required disabled onchange="loadDesa()" class="w-full mt-0.5 px-3 py-2 border rounded-lg text-sm bg-gray-50 outline-none disabled:bg-gray-100">
+                            <option value="">Pilih Kecamatan</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[11px] text-gray-500 font-medium">Desa / Kelurahan</label>
+                        <select id="desa" required disabled class="w-full mt-0.5 px-3 py-2 border rounded-lg text-sm bg-gray-50 outline-none disabled:bg-gray-100">
+                            <option value="">Pilih Desa/Kelurahan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tombol Submit -->
+                <button type="submit" id="btn-submit" class="w-full py-3 bg-indigo-600 text-white font-bold rounded-xl shadow-md hover:bg-indigo-700 transition">
+                    KIRIM PENDAFTARAN
+                </button>
+            </form>
+        </section>
+
+        <!-- KONTEN TAB: PESERTA -->
+        <section id="content-peserta" class="hidden space-y-4">
+            <div class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                <div>
+                    <h2 class="text-sm font-bold text-gray-800">Daftar Peserta Resmi</h2>
+                    <p class="text-xs text-gray-500" id="info-jumlah-peserta">Memuat data...</p>
+                </div>
+                <!-- Tombol Akses Admin / Panel Kontrol -->
+                <div id="admin-action-container">
+                    <button onclick="bukaLoginAdmin()" class="text-xs bg-gray-100 text-gray-600 px-3 py-1.5 rounded-lg font-semibold hover:bg-gray-200 transition">🔒 Login Admin</button>
+                </div>
+            </div>
+
+            <!-- Area Panel Khusus Admin (Tersembunyi Awalnya) -->
+            <div id="panel-admin-tools" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold text-amber-800 uppercase tracking-wider">🛠️ Panel Kontrol Admin Aktif</span>
+                    <button onclick="logoutAdmin()" class="text-xs bg-red-100 text-red-600 px-2.5 py-1 rounded-md font-semibold">Keluar Admin</button>
+                </div>
+                <button onclick="downloadExcel()" class="w-full py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow hover:bg-emerald-700 transition">
+                    📥 Download Data Peserta (.xlsx)
+                </button>
+            </div>
+
+            <!-- List Peserta -->
+            <div id="list-peserta" class="space-y-3">
+                <!-- Data akan dimasukkan otomatis lewat script -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Script Utama JavaScript -->
+    <script>
+        // --- KONFIGURASI SUPABASE ---
+        // Ganti teks di dalam tanda kutip di bawah dengan milik Anda yang tersimpan di catatan!
+        const SUPABASE_URL = "https://aibsrmgohrqmpnpfvlvd.supabase.co/rest/v1/"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpYnNybWdvaHJxbXBucGZ2bHZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MzU2NzIsImV4cCI6MjEwNTAxMTY3Mn0.ZNRFxLA_3CBXx5hqIG6jkZkJKUrX1ELDjeK5e4e2nRg"; 
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Password Admin Sederhana (bisa Anda ubah di sini)
+        const ADMIN_PASSWORD_RAHASIA = "admin123"; 
+        let isAdminLoggedIn = false;
+
+        // Inisialisasi saat web dibuka
+        document.addEventListener("DOMContentLoaded", () => {
+            loadProvinsi();
+            ambilDataPeserta();
+        });
+
+        // Tab Switcher
+        function switchTab(tab) {
+            if(tab === 'daftar') {
+                document.getElementById('content-daftar').classList.remove('hidden');
+                document.getElementById('content-peserta').classList.add('hidden');
+                document.getElementById('tab-daftar').className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition";
+                document.getElementById('tab-peserta').className = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:text-indigo-600 transition";
+            } else {
+                document.getElementById('content-daftar').classList.add('hidden');
+                document.getElementById('content-peserta').classList.remove('hidden');
+                document.getElementById('tab-peserta').className = "flex-1 py-2 text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition";
+                document.getElementById('tab-daftar').className = "flex-1 py-2 text-sm font-semibold rounded-lg text-gray-600 hover:text-indigo-600 transition";
+                ambilDataPeserta();
+            }
+        }
+
+        // --- DROPDOWN WILAYAH OTOMATIS (API INDONESIA) ---
+        async function loadProvinsi() {
+            try {
+                let res = await fetch('https://www.emsifa.github.io/api-wilayah-indonesia/api/provinces.json');
+                let data = await res.json();
+                let select = document.getElementById('provinsi');
+                data.forEach(p => {
+                    let opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.setAttribute('data-id', p.id);
+                    opt.textContent = p.name;
+                    select.appendChild(opt);
+                });
+            } catch (e) { console.log("Gagal memuat provinsi"); }
+        }
+
+        async function loadKabupaten() {
+            let provSelect = document.getElementById('provinsi');
+            let provId = provSelect.options[provSelect.selectedIndex].getAttribute('data-id');
+            let kabSelect = document.getElementById('kabupaten');
+            
+            kabSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+            kabSelect.disabled = true;
+            resetSelect('kecamatan', 'Pilih Kecamatan');
+            resetSelect('desa', 'Pilih Desa/Kelurahan');
+
+            if(!provId) return;
+
+            let res = await fetch(`https://www.emsifa.github.io/api-wilayah-indonesia/api/regencies/${provId}.json`);
+            let data = await res.json();
+            data.forEach(k => {
+                let opt = document.createElement('option');
+                opt.value = k.name;
+                opt.setAttribute('data-id', k.id);
+                opt.textContent = k.name;
+                kabSelect.appendChild(opt);
+            });
+            kabSelect.disabled = false;
+        }
+
+        async function loadKecamatan() {
+            let kabSelect = document.getElementById('kabupaten');
+            let kabId = kabSelect.options[kabSelect.selectedIndex].getAttribute('data-id');
+            let kecSelect = document.getElementById('kecamatan');
+            
+            kecSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+            kecSelect.disabled = true;
+            resetSelect('desa', 'Pilih Desa/Kelurahan');
+
+            if(!kabId) return;
+
+            let res = await fetch(`https://www.emsifa.github.io/api-wilayah-indonesia/api/districts/${kabId}.json`);
+            let data = await res.json();
+            data.forEach(kc => {
+                let opt = document.createElement('option');
+                opt.value = kc.name;
+                opt.setAttribute('data-id', kc.id);
+                opt.textContent = kc.name;
+                kecSelect.appendChild(opt);
+            });
+            kecSelect.disabled = false;
+        }
+
+        async function loadDesa() {
+            let kecSelect = document.getElementById('kecamatan');
+            let kecId = kecSelect.options[kecSelect.selectedIndex].getAttribute('data-id');
+            let desaSelect = document.getElementById('desa');
+            
+            desaSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+            desaSelect.disabled = true;
+
+            if(!kecId) return;
+
+            let res = await fetch(`https://www.emsifa.github.io/api-wilayah-indonesia/api/villages/${kecId}.json`);
+            let data = await res.json();
+            let limitData = data.slice(0, 100); // Batasi agar ringan
+            limitData.forEach(d => {
+                let opt = document.createElement('option');
+                opt.value = d.name;
+                opt.textContent = d.name;
+                desaSelect.appendChild(opt);
+            });
+            desaSelect.disabled = false;
+        }
+
+        function resetSelect(id, text) {
+            let el = document.getElementById(id);
+            el.innerHTML = `<option value="">${text}</option>`;
+            el.disabled = true;
+        }
+
+        // --- KIRIM PENDAFTARAN KE SUPABASE ---
+        async function kirimPendaftaran(e) {
+            e.preventDefault();
+            let btn = document.getElementById('btn-submit');
+            btn.disabled = true;
+            btn.textContent = "MENGIRIM...";
+
+            let dataBaru = {
+                nama_pasangan: document.getElementById('nama_pasangan').value.toUpperCase(),
+                gardu_klub: document.getElementById('gardu_klub').value.toUpperCase(),
+                whatsapp: document.getElementById('whatsapp').value,
+                provinsi: document.getElementById('provinsi').value,
+                kabupaten: document.getElementById('kabupaten').value,
+                kecamatan: document.getElementById('kecamatan').value,
+                desa: document.getElementById('desa').value,
+                status: 'pending'
+            };
+
+            let { error } = await supabaseClient.from('peserta').insert([dataBaru]);
+
+            if (error) {
+                alert("Gagal mengirim pendaftaran: " + error.message);
+                btn.disabled = false;
+                btn.textContent = "KIRIM PENDAFTARAN";
+            } else {
+                alert("Pendaftaran Berhasil! Silakan lakukan pembayaran agar status Anda diverifikasi oleh Admin.");
+                document.getElementById('form-pendaftaran').reset();
+                btn.disabled = false;
+                btn.textContent = "KIRIM PENDAFTARAN";
+                switchTab('peserta');
+            }
+        }
+
+        // --- AMBIL & TAMPILKAN DATA PESERTA ---
+        let globalDataPeserta = [];
+
+        async function ambilDataPeserta() {
+            let container = document.getElementById('list-peserta');
+            container.innerHTML = '<p class="text-center text-xs text-gray-400 py-6">Memuat daftar peserta...</p>';
+
+            let query = supabaseClient.from('peserta').select('*').order('created_at', { ascending: true });
+            
+            // Jika bukan admin, publik hanya melihat yang terverifikasi (opsional, tapi kita tampilkan semua agar admin bisa approve, nanti difilter tampilannya)
+            let { data, error } = await query;
+
+            if (error) {
+                container.innerHTML = `<p class="text-center text-xs text-red-500">Gagal memuat data: ${error.message}</p>`;
+                return;
+            }
+
+            globalDataPeserta = data;
+            
+            // Filter untuk tampilan publik (hanya yang terverifikasi, kecuali admin login)
+            let tampilanData = isAdminLoggedIn ? data : data.filter(p => p.status === 'terverifikasi');
+
+            document.getElementById('info-jumlah-peserta').textContent = `Total ${tampilanData.length} Peserta Ditampilkan`;
+
+            if (tampilanData.length === 0) {
+                container.innerHTML = '<div class="text-center bg-white p-6 rounded-2xl border text-gray-400 text-xs">Belum ada peserta terverifikasi.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            tampilanData.forEach((p, index) => {
+                let badgeStatus = p.status === 'terverifikasi' 
+                    ? '<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">Terverifikasi</span>'
+                    : '<span class="text-[10px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold">Pending (Menunggu Bayar)</span>';
+
+                let adminActions = '';
+                if (isAdminLoggedIn) {
+                    let tombolUbahStatus = p.status === 'terverifikasi'
+                        ? `<button onclick="ubahStatus(${p.id}, 'pending')" class="text-[10px] bg-yellow-500 text-white px-2 py-1 rounded font-semibold">Jadikan Pending</button>`
+                        : `<button onclick="ubahStatus(${p.id}, 'terverifikasi')" class="text-[10px] bg-emerald-600 text-white px-2 py-1 rounded font-semibold">Approve</button>`;
+                    
+                    let tombolHapus = `<button onclick="hapusPeserta(${p.id})" class="text-[10px] bg-red-500 text-white px-2 py-1 rounded font-semibold">Hapus</button>`;
+                    
+                    adminActions = `<div class="mt-2 pt-2 border-t flex gap-2">${tombolUbahStatus} ${tombolHapus}</div>`;
+                }
+
+                let card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl border border-gray-100 shadow-sm space-y-2";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-bold text-gray-400">#${index + 1}</span>
+                        ${badgeStatus}
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-indigo-900 uppercase">${p.nama_pasangan}</h3>
+                        <p class="text-xs text-gray-600 font-medium">Klub/Gardu: ${p.gardu_klub}</p>
+                        <p class="text-[11px] text-gray-400 mt-1">Domisili: ${p.desa}, ${p.kecamatan}, ${p.kabupaten}</p>
+                        <p class="text-[11px] text-gray-400">WhatsApp: ${p.whatsapp}</p>
+                    </div>
+                    ${adminActions}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- SISTEM ADMIN ---
+        function bukaLoginAdmin() {
+            let pwd = prompt("Masukkan Password Admin:");
+            if (pwd === ADMIN_PASSWORD_RAHASIA) {
+                isAdminLoggedIn = true;
+                document.getElementById('admin-action-container').classList.add('hidden');
+                document.getElementById('panel-admin-tools').classList.remove('hidden');
+                alert("Login Admin Berhasil!");
+                ambilDataPeserta();
+            } else if (pwd !== null) {
+                alert("Password Salah!");
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            document.getElementById('admin-action-container').classList.remove('hidden');
+            document.getElementById('panel-admin-tools').classList.add('hidden');
+            alert("Berhasil keluar dari mode admin.");
+            ambilDataPeserta();
+        }
+
+        async function ubahStatus(id, statusBaru) {
+            let { error } = await supabaseClient.from('peserta').update({ status: statusBaru }).eq('id', id);
+            if (error) {
+                alert("Gagal mengubah status: " + error.message);
+            } else {
+                ambilDataPeserta();
+            }
+        }
+
+        async function hapusPeserta(id) {
+            if (confirm("Yakin ingin menghapus peserta ini dari database?")) {
+                let { error } = await supabaseClient.from('peserta').delete().eq('id', id);
+                if (error) {
+                    alert("Gagal menghapus: " + error.message);
+                } else {
+                    ambilDataPeserta();
+                }
+            }
+        }
+
+        // --- DOWNLOAD EXCEL ---
+        function downloadExcel() {
+            if (globalDataPeserta.length === 0) {
+                alert("Tidak ada data untuk di-download.");
+                return;
+            }
+
+            // Format data agar rapi di Excel
+            let dataExcel = globalDataPeserta.map((p, idx) => ({
+                "No": idx + 1,
+                "Nama Pasangan": p.nama_pasangan,
+                "Gardu / Klub": p.gardu_klub,
+                "WhatsApp": p.whatsapp,
+                "Provinsi": p.provinsi,
+                "Kabupaten/Kota": p.kabupaten,
+                "Kecamatan": p.kecamatan,
+                "Desa/Kelurahan": p.desa,
+                "Status Pembayaran": p.status.toUpperCase(),
+                "Tanggal Daftar": p.created_at
+            }));
+
+            let worksheet = XLSX.utils.json_to_sheet(dataExcel);
+            let workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Data Peserta Domino");
+            
+            // Simpan file
+            XLSX.writeFile(workbook, "Data_Peserta_Domino_Championship.xlsx");
+        }
+    </script>
+</body>
+</html>
