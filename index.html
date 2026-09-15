@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domino Championship - VVIP Official Portal</title>
+    <title>Domino Championship - Official Portal</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -12,8 +12,8 @@
             theme: {
                 extend: {
                     colors: {
-                        gold: { 400: '#facc15', 500: '#eab308', 600: '#ca8a04' },
-                        obsidian: '#090d16'
+                        gold: { 500: '#d97706', 600: '#b45309', 700: '#92400e' },
+                        luxury: { bg: '#f8fafc', card: '#ffffff', border: '#e2e8f0', text: '#0f172a' }
                     }
                 }
             }
@@ -25,209 +25,362 @@
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #090d16; color: #f8fafc; }
-        .glass-card { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(234, 179, 8, 0.2); }
-        .gold-gradient-text { background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #ca8a04 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .gold-btn { background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%); color: #090d16; font-weight: 800; transition: all 0.3s ease; }
-        .gold-btn:hover { background: linear-gradient(135deg, #fde047 0%, #eab308 100%); box-shadow: 0 0 25px rgba(234, 179, 8, 0.4); transform: translateY(-1px); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; transition: background-color 0.3s, color 0.3s; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border: 1px solid #e2e8f0; box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05); transition: background-color 0.3s, border-color 0.3s; }
+        .gold-gradient-text { background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #92400e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gold-btn { background: linear-gradient(135deg, #f59e0b 0%, #b45309 100%); color: #ffffff; font-weight: 700; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 10px 15px -3px rgba(217, 119, 6, 0.25); }
+        .gold-btn:hover { background: linear-gradient(135deg, #d97706 0%, #92400e 100%); box-shadow: 0 15px 20px -3px rgba(217, 119, 6, 0.4); transform: translateY(-1px); }
+
+        /* --- ATURAN DARK MODE --- */
+        .dark body { background-color: #0f172a; color: #f8fafc; }
+        .dark .glass-card { background: rgba(30, 41, 59, 0.9); border-color: #334155; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); }
+        .dark header { background-color: rgba(15, 23, 42, 0.85); border-bottom-color: rgba(51, 65, 85, 0.8); }
+        .dark input, .dark select { background-color: #1e293b !important; color: #f8fafc !important; border-color: #334155 !important; }
+        .dark input::placeholder { color: #64748b !important; }
+        
+        /* Auto-adjust warna bawaan Tailwind pada class HTML */
+        .dark .text-slate-900 { color: #f8fafc !important; }
+        .dark .text-slate-700 { color: #e2e8f0 !important; }
+        .dark .text-slate-600 { color: #cbd5e1 !important; }
+        .dark .text-slate-500 { color: #94a3b8 !important; }
+        .dark .bg-slate-50 { background-color: #1e293b !important; }
+        .dark .bg-slate-100 { background-color: #334155 !important; }
+        .dark .bg-white { background-color: #1e293b !important; }
+        .dark .border-slate-200, .dark .border-slate-100 { border-color: #334155 !important; }
+        .dark #status-pendaftaran-banner { background-color: rgba(159, 18, 57, 0.2); border-color: rgba(225, 29, 72, 0.4); }
     </style>
 </head>
-<body class="min-h-screen pb-16 selection:bg-amber-500 selection:text-slate-950">
+<body class="min-h-screen pb-16 selection:bg-amber-500 selection:text-white">
 
-    <!-- Header Mewah -->
-    <header class="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-amber-500/20 shadow-2xl">
-        <div class="max-w-2xl mx-auto px-4 py-4 text-center">
-            <span class="inline-block px-3 py-1 text-[10px] font-extrabold tracking-widest text-amber-400 uppercase bg-amber-500/10 border border-amber-500/30 rounded-full mb-1">VVIP Championship Portal</span>
-            <h1 class="text-2xl font-extrabold gold-gradient-text tracking-wider">DOMINO BATTLE EXCLUSIVE</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Sistem Manajemen & Registrasi Kejuaraan Resmi</p>
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/80 shadow-sm transition-colors duration-300">
+        <div class="max-w-2xl mx-auto px-4 py-4 text-center relative">
             
-            <!-- Tab Navigasi -->
-            <div class="flex justify-center gap-2 mt-4 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
-                <button onclick="switchTab('daftar')" id="tab-daftar" class="flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn shadow-lg transition">📝 REGISTRASI</button>
-                <button onclick="switchTab('peserta')" id="tab-peserta" class="flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition">👥 DAFTAR PESERTA</button>
+            <!-- Tombol Theme di Header Kiri -->
+            <div id="header-theme-btn-container" class="absolute left-4 top-4">
+                <button onclick="toggleTheme()" id="theme-toggle-btn" class="text-[13px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-600 px-3.5 py-1.5 rounded-xl transition flex items-center justify-center shadow-sm">
+                    ☀️
+                </button>
+            </div>
+
+            <!-- Tombol Login Cepat di Header Kanan -->
+            <div id="header-login-btn-container" class="absolute right-4 top-4">
+                <button onclick="bukaLoginAdmin()" class="text-[11px] bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-500 border border-amber-500/30 px-3.5 py-1.5 rounded-xl font-bold transition flex items-center gap-1.5 shadow-sm">
+                    <span>🔑</span> Login
+                </button>
+            </div>
+
+            <span class="inline-block px-3.5 py-1 text-[10px] font-extrabold tracking-widest text-amber-700 dark:text-amber-400 uppercase bg-amber-50 dark:bg-amber-900/30 border border-amber-500/20 rounded-full mb-1">Official Championship Portal</span>
+            <h1 class="text-2xl font-extrabold gold-gradient-text tracking-tight">DOMINO BATTLE EXCLUSIVE</h1>
+            <p class="text-xs text-slate-500 mt-0.5 font-medium">Sistem Manajemen & Registrasi Kejuaraan Resmi</p>
+            
+            <!-- Navbar 3 Opsi -->
+            <div class="flex justify-center gap-2 mt-4 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+                <button onclick="switchTab('daftar')" id="tab-daftar" class="flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn transition">📝 REGISTRASI</button>
+                <button onclick="switchTab('peserta')" id="tab-peserta" class="flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition">👥 DAFTAR PESERTA</button>
+                <button onclick="switchTab('pengaturan')" id="tab-pengaturan" class="hidden flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition">⚙️ PENGATURAN</button>
             </div>
         </div>
     </header>
 
     <main class="max-w-2xl mx-auto px-4 mt-6">
 
-        <!-- TAB: DAFTAR -->
+        <!-- TAB 1: REGISTRASI -->
         <section id="content-daftar" class="space-y-5">
-            <!-- Indikator Status Pendaftaran (Dinamis) -->
-            <div id="status-pendaftaran-banner" class="hidden glass-card rounded-3xl p-6 text-center space-y-3 border border-rose-500/30 bg-rose-950/10">
+            <!-- Indikator Status Pendaftaran -->
+            <div id="status-pendaftaran-banner" class="hidden glass-card rounded-3xl p-6 text-center space-y-3 border border-rose-200 bg-rose-50/50">
                 <div class="text-4xl">🔒</div>
-                <h2 class="text-base font-extrabold text-rose-400 uppercase tracking-wider">Pendaftaran Telah Ditutup</h2>
-                <p class="text-xs text-slate-300 leading-relaxed">Mohon maaf, sesi pendaftaran pasangan baru saat ini telah ditutup oleh Panitia Utama. Anda tetap dapat memantau daftar peserta yang lolos melalui menu <strong>Daftar Peserta</strong>.</p>
+                <h2 class="text-base font-extrabold text-rose-700 uppercase tracking-wider">Pendaftaran Telah Ditutup</h2>
+                <p class="text-xs text-slate-600 leading-relaxed font-medium">Mohon maaf, sesi pendaftaran pasangan baru saat ini telah ditutup oleh Panitia Utama. Anda tetap dapat memantau daftar peserta melalui menu <strong>Daftar Peserta</strong>.</p>
             </div>
 
             <!-- Konten Form Utama -->
             <div id="wrapper-form-pendaftaran" class="space-y-5">
                 <!-- Info Rekening -->
-                <div class="glass-card rounded-3xl p-5 border-l-4 border-amber-400 shadow-xl relative overflow-hidden">
-                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+                <div class="glass-card rounded-3xl p-5 border-l-4 border-amber-500 shadow-lg relative overflow-hidden bg-gradient-to-r from-amber-50/50 to-white dark:from-amber-900/20 dark:to-slate-800">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl"></div>
                     <div class="flex items-start gap-3">
                         <span class="text-2xl">💎</span>
                         <div class="space-y-1">
-                            <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400">Instruksi Pembayaran VVIP</h2>
-                            <p class="text-xs text-slate-300 leading-relaxed">Transfer biaya registrasi ke Rekening Resmi: <br><strong class="text-amber-300 text-sm">BCA 8880123456 a.n Panitia Utama</strong>. Status akan diverifikasi admin setelah bukti diterima.</p>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-500">Instruksi Pembayaran</h2>
+                            <p class="text-xs text-slate-600 leading-relaxed font-medium">Silakan transfer biaya registrasi ke rekening panitia. Data yang masuk akan diverifikasi setelah bukti transfer diterima.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Form -->
-                <form id="form-pendaftaran" class="glass-card rounded-3xl p-6 md:p-8 shadow-2xl space-y-5" onsubmit="kirimPendaftaran(event)">
+                <form id="form-pendaftaran" class="glass-card rounded-3xl p-6 md:p-8 shadow-xl space-y-5" onsubmit="kirimPendaftaran(event)">
                     <div class="space-y-1.5">
-                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nama Pasangan (Wajib Format: NAMA1/NAMA2) *</label>
-                        <input type="text" id="nama_pasangan" required placeholder="CONTOH: BUDI SANTOSO / ANDI WIJAYA" oninput="this.value = this.value.toUpperCase()" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold uppercase text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
-                        <p class="text-[10px] text-slate-500">Wajib 2 nama dipisahkan garis miring tanpa spasi berlebih.</p>
+                        <label class="block text-xs font-bold tracking-wider text-slate-700 uppercase">Nama Pasangan (Format: NAMA1/NAMA2) *</label>
+                        <input type="text" id="nama_pasangan" required placeholder="CONTOH: BUDI SANTOSO / ANDI WIJAYA" oninput="this.value = this.value.toUpperCase()" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold uppercase text-slate-900 placeholder:text-slate-400 focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 outline-none transition">
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nama Gardu / Klub *</label>
-                        <input type="text" id="gardu_klub" required placeholder="GARDU MAWAR VVIP" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold uppercase text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
+                        <label class="block text-xs font-bold tracking-wider text-slate-700 uppercase">Nama Gardu / Klub *</label>
+                        <input type="text" id="gardu_klub" required placeholder="GARDU MAWAR" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold uppercase text-slate-900 placeholder:text-slate-400 focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 outline-none transition">
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Nomor WhatsApp Aktif *</label>
-                        <input type="tel" id="whatsapp" required placeholder="081234567890" oninput="this.value = this.value.replace(/\D/g, '')" class="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-sm font-semibold text-slate-100 placeholder:text-slate-600 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none transition">
-                        <p class="text-[10px] text-slate-500">Hanya angka numerik, diawali 0 atau 62 (10-13 digit).</p>
+                        <label class="block text-xs font-bold tracking-wider text-slate-700 uppercase">Nomor WhatsApp Aktif *</label>
+                        <input type="tel" id="whatsapp" required placeholder="081234567890" oninput="this.value = this.value.replace(/\D/g, '')" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:border-amber-600 focus:ring-2 focus:ring-amber-500/20 outline-none transition">
                     </div>
 
                     <!-- Wilayah -->
-                    <div class="space-y-3 pt-2 border-t border-slate-800/80">
-                        <label class="block text-xs font-bold tracking-wider text-amber-400/90 uppercase">Wilayah Domisili Domestik</label>
+                    <div class="space-y-3 pt-2 border-t border-slate-100">
+                        <label class="block text-xs font-bold tracking-wider text-slate-700 uppercase">Wilayah Domisili</label>
                         <div class="grid grid-cols-1 gap-3">
                             <div>
-                                <label class="text-[11px] text-slate-400 font-medium">Provinsi</label>
-                                <select id="provinsi" required onchange="loadKabupaten()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400">
+                                <label class="text-[11px] text-slate-500 font-semibold">Provinsi</label>
+                                <select id="provinsi" required onchange="loadKabupaten()" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-amber-600 font-medium">
                                     <option value="">Memuat Provinsi...</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-medium">Kabupaten / Kota</label>
-                                <select id="kabupaten" required disabled onchange="loadKecamatan()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
+                                <label class="text-[11px] text-slate-500 font-semibold">Kabupaten / Kota</label>
+                                <select id="kabupaten" required disabled onchange="loadKecamatan()" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-amber-600 disabled:opacity-50 font-medium">
                                     <option value="">Pilih Provinsi Dahulu</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-medium">Kecamatan</label>
-                                <select id="kecamatan" required disabled onchange="loadDesa()" class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
+                                <label class="text-[11px] text-slate-500 font-semibold">Kecamatan</label>
+                                <select id="kecamatan" required disabled onchange="loadDesa()" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-amber-600 disabled:opacity-50 font-medium">
                                     <option value="">Pilih Kabupaten Dahulu</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="text-[11px] text-slate-400 font-medium">Desa / Kelurahan</label>
-                                <select id="desa" required disabled class="w-full mt-1 px-4 py-2.5 bg-slate-950/90 border border-slate-800 rounded-xl text-sm text-slate-200 outline-none focus:border-amber-400 disabled:opacity-50">
+                                <label class="text-[11px] text-slate-500 font-semibold">Desa / Kelurahan</label>
+                                <select id="desa" required disabled class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-amber-600 disabled:opacity-50 font-medium">
                                     <option value="">Pilih Kecamatan Dahulu</option>
                                 </select>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" id="btn-submit" class="w-full py-4 gold-btn rounded-2xl shadow-xl uppercase tracking-wider text-sm mt-4">
-                        SUBMIT PENDAFTARAN VVIP
+                    <button type="submit" id="btn-submit" onclick="playClickSound()" class="w-full py-4 gold-btn rounded-2xl shadow-lg uppercase tracking-wider text-sm mt-4">
+                        SUBMIT PENDAFTARAN
                     </button>
                 </form>
             </div>
         </section>
 
-        <!-- TAB: PESERTA -->
+        <!-- TAB 2: DAFTAR PESERTA (PUBLIK) -->
         <section id="content-peserta" class="hidden space-y-4">
-            <div class="glass-card p-5 rounded-3xl flex justify-between items-center shadow-xl">
-                <div>
-                    <h2 class="text-sm font-bold text-amber-300">Direktori Peserta Resmi</h2>
-                    <p class="text-xs text-slate-400" id="info-jumlah-peserta">Sinkronisasi data...</p>
+            <div class="glass-card p-5 rounded-3xl space-y-3 shadow-lg">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-sm font-extrabold text-slate-900">Direktori Peserta Resmi</h2>
+                        <p class="text-xs text-slate-500 font-medium" id="info-jumlah-peserta">Sinkronisasi data...</p>
+                    </div>
                 </div>
-                <div id="admin-action-container">
-                    <button onclick="bukaLoginAdmin()" class="text-xs bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3.5 py-2 rounded-xl font-bold transition">🔒 Login Admin</button>
+                <!-- Kotak Pencarian Peserta -->
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">🔍</span>
+                    <input type="text" id="search-peserta" placeholder="Cari ID, Nama Pasangan, Gardu, atau Wilayah..." oninput="renderDataPesertaPublik()" class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-amber-600 transition font-medium">
                 </div>
             </div>
 
-            <!-- Panel Kontrol Administrator -->
-            <div id="panel-admin-tools" class="hidden glass-card border-amber-500/40 rounded-3xl p-5 space-y-3 bg-amber-950/10">
-                <div class="flex justify-between items-center">
-                    <span class="text-xs font-extrabold text-amber-400 uppercase tracking-widest">⚡ Super Admin Control Center</span>
-                    <button onclick="logoutAdmin()" class="text-xs bg-rose-500/20 text-rose-300 border border-rose-500/40 px-3 py-1.5 rounded-lg font-bold hover:bg-rose-500/30 transition">Keluar</button>
+            <!-- List Peserta Publik -->
+            <div id="list-peserta-publik" class="space-y-3">
+                <!-- Diisi JavaScript -->
+            </div>
+        </section>
+
+        <!-- TAB 3: PENGATURAN (ADMIN) -->
+        <section id="content-pengaturan" class="hidden space-y-4">
+            <div class="glass-card border-amber-500/30 rounded-3xl p-5 space-y-4 bg-gradient-to-b from-amber-50/30 to-white dark:from-amber-900/10 dark:to-slate-800 shadow-xl">
+                <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                    <div>
+                        <span class="text-xs font-extrabold text-amber-700 dark:text-amber-500 uppercase tracking-widest" id="label-role-session">⚡ Control Center</span>
+                        <p class="text-[10px] text-slate-500 font-semibold" id="info-user-login">-</p>
+                    </div>
+                    <button onclick="logoutAdmin()" class="text-xs bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800 px-3 py-1.5 rounded-lg font-bold hover:bg-rose-100 transition shadow-sm">Keluar</button>
                 </div>
                 
                 <!-- Toggle Buka/Tutup Pendaftaran -->
-                <div class="bg-slate-950/60 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
+                <div id="wrapper-toggle-reg" class="bg-white p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm">
                     <div>
-                        <p class="text-xs font-bold text-white">Status Pendaftaran Publik</p>
-                        <p class="text-[10px] text-slate-400" id="label-status-toggle">Memeriksa status...</p>
+                        <p class="text-xs font-bold text-slate-900">Status Pendaftaran Publik</p>
+                        <p class="text-[10px] text-slate-500 font-medium" id="label-status-toggle">Memeriksa status...</p>
                     </div>
-                    <button id="btn-toggle-reg" onclick="togglePendaftaran()" class="px-4 py-2 rounded-xl text-xs font-extrabold transition shadow">Ubah Status</button>
+                    <button id="btn-toggle-reg" onclick="togglePendaftaran(); playClickSound();" class="px-4 py-2 rounded-xl text-xs font-extrabold transition shadow-sm">Ubah Status</button>
                 </div>
 
-                <button onclick="downloadExcel()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
-                    <span>📥</span> Unduh Laporan Excel (.xlsx)
-                </button>
+                <!-- Panel Manajemen Akun Berjenjang -->
+                <div id="section-manajemen-akun" class="hidden bg-white p-4 rounded-2xl border border-slate-200 space-y-3 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-extrabold text-amber-800 dark:text-amber-500 uppercase tracking-wider" id="title-crud-akun">👥 Kelola Akun</h3>
+                        <span class="text-[10px] bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-400 px-2 py-0.5 rounded font-extrabold" id="badge-target-akun">Target: Operator</span>
+                    </div>
+
+                    <form onsubmit="buatAkunBaru(event); playClickSound();" class="space-y-2 pt-1">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <input type="email" id="new-user-email" required placeholder="abc@gmail.com" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600">
+                            <input type="password" id="new-user-pass" required placeholder="Password baru" class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 outline-none focus:border-amber-600">
+                        </div>
+                        <input type="hidden" id="new-user-role" value="operator">
+                        <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs rounded-xl shadow transition">➕ Buat Akun Baru</button>
+                    </form>
+
+                    <div class="pt-2 border-t border-slate-100 dark:border-slate-700">
+                        <p class="text-[10px] font-bold text-slate-500 uppercase mb-2">Daftar Akun yang Dikelola:</p>
+                        <div id="list-akun-container" class="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                            <!-- Diisi JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button onclick="downloadExcel(); playClickSound();" class="py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <span>📥</span> Unduh Laporan Excel (.xlsx)
+                    </button>
+                    <button onclick="konfirmasiResetData(); playClickSound();" class="py-3 bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <span>⚠️</span> Reset Seluruh Data
+                    </button>
+                </div>
             </div>
 
-            <!-- List Peserta -->
-            <div id="list-peserta" class="space-y-3">
-                <!-- Diisi JavaScript -->
+            <!-- Panel Pengelolaan Peserta Admin -->
+            <div class="glass-card border-slate-200 rounded-3xl p-5 space-y-3 shadow-lg">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest">⚙️ Kelola Verifikasi Peserta</h3>
+                </div>
+                <!-- Kotak Pencarian Admin -->
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">🔍</span>
+                    <input type="text" id="search-admin" placeholder="Cari ID, Nama Pasangan, Gardu, atau Wilayah..." oninput="renderDataPesertaAdmin()" class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:border-amber-600 transition font-medium">
+                </div>
+                <div id="list-peserta-admin" class="space-y-3 pt-1">
+                    <!-- Diisi JS -->
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- CUSTOM MODAL VVIP -->
-    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
-        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-amber-500/40 shadow-2xl text-center space-y-4">
+    <!-- CUSTOM NOTIFICATION MODAL -->
+    <div id="custom-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm hidden p-4">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-slate-200 shadow-2xl text-center space-y-4">
             <div id="modal-icon" class="text-4xl">👑</div>
-            <h3 id="modal-title" class="text-base font-extrabold text-amber-300">Pemberitahuan VVIP</h3>
-            <p id="modal-message" class="text-xs text-slate-300 leading-relaxed">Pesan sistem...</p>
+            <h3 id="modal-title" class="text-base font-extrabold text-slate-900">Pemberitahuan Sistem</h3>
+            <p id="modal-message" class="text-xs text-slate-600 leading-relaxed font-medium">Pesan sistem...</p>
             <div class="pt-2">
-                <button onclick="tutupModal()" class="w-full py-3 gold-btn rounded-xl text-xs uppercase tracking-wider">Mengerti</button>
+                <button onclick="tutupModal(); playClickSound();" class="w-full py-3 gold-btn rounded-xl text-xs uppercase tracking-wider">Mengerti</button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM ADMIN LOGIN MODAL (Mendukung Email Super Admin) -->
-    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md hidden p-4">
-        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-amber-500/40 shadow-2xl space-y-4">
-            <h3 class="text-sm font-extrabold text-amber-300 uppercase tracking-wider text-center">🔐 Otorisasi Super Admin</h3>
-            <p class="text-xs text-slate-400 text-center">Masukkan akun kredensial administrator Anda.</p>
+    <!-- CUSTOM CONFIRMATION MODAL -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm hidden p-4">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-rose-200 shadow-2xl text-center space-y-4 bg-white">
+            <div id="confirm-icon" class="text-4xl">⚠️</div>
+            <h3 id="confirm-title" class="text-base font-extrabold text-rose-700">Konfirmasi Tindakan</h3>
+            <p id="confirm-message" class="text-xs text-slate-600 leading-relaxed font-medium">Pesan konfirmasi...</p>
+            <div class="flex gap-2 pt-2">
+                <button type="button" onclick="tutupConfirmModal(); playClickSound();" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition">Batal</button>
+                <button type="button" id="btn-confirm-yes" class="flex-1 py-2.5 bg-rose-700 hover:bg-rose-800 text-white rounded-xl text-xs font-bold shadow transition">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM ADMIN LOGIN MODAL -->
+    <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm hidden p-4">
+        <div class="glass-card max-w-sm w-full p-6 rounded-3xl border border-slate-200 shadow-2xl space-y-4 bg-white">
+            <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wider text-center">🔐 Otorisasi Administrator</h3>
+            <p class="text-xs text-slate-500 text-center font-medium">Masukkan akun kredensial panitia atau super admin Anda.</p>
             
             <div class="space-y-3">
                 <div>
-                    <label class="text-[10px] text-slate-400 font-bold uppercase">Username / Email</label>
-                    <input type="text" id="admin-user-input" placeholder="appslab75@gmail.com" class="w-full mt-1 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white outline-none focus:border-amber-400">
+                    <label class="text-[10px] text-slate-500 font-bold uppercase">Username / Email</label>
+                    <input type="text" id="admin-user-input" placeholder="abc@gmail.com" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-amber-600 font-medium">
                 </div>
                 <div>
-                    <label class="text-[10px] text-slate-400 font-bold uppercase">Password</label>
-                    <input type="password" id="admin-password-input" placeholder="••••••••" class="w-full mt-1 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-sm text-white outline-none focus:border-amber-400">
+                    <label class="text-[10px] text-slate-500 font-bold uppercase">Password</label>
+                    <input type="password" id="admin-password-input" placeholder="••••••••" class="w-full mt-1 px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 outline-none focus:border-amber-600 font-medium">
                 </div>
             </div>
 
             <div class="flex gap-2 pt-2">
-                <button onclick="tutupAdminModal()" class="flex-1 py-2.5 bg-slate-800 text-slate-300 rounded-xl text-xs font-bold">Batal</button>
-                <button onclick="prosesLoginAdmin()" class="flex-1 py-2.5 gold-btn rounded-xl text-xs font-bold">Masuk</button>
+                <button type="button" onclick="tutupAdminModal(); playClickSound();" class="flex-1 py-2.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 rounded-xl text-xs font-bold transition">Batal</button>
+                <button type="button" onclick="prosesLoginAdmin(); playClickSound();" class="flex-1 py-2.5 gold-btn rounded-xl text-xs font-bold">Masuk</button>
             </div>
         </div>
     </div>
 
     <!-- Script Utama -->
     <script>
+        // --- Inisialisasi Tema dari LocalStorage ---
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.classList.replace('dark', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+
+        // --- Fungsi Global Audio Click ---
+        function playClickSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.05);
+            } catch(e) {
+                console.log("Audio API tidak didukung");
+            }
+        }
+
+        // --- Eksekutor Switch Theme ---
+        function toggleTheme() {
+            playClickSound(); // Trigger efek suara
+            
+            const html = document.documentElement;
+            const btn = document.getElementById('theme-toggle-btn');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.replace('dark', 'light');
+                btn.innerHTML = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.replace('light', 'dark');
+                btn.innerHTML = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
         const SUPABASE_URL = "https://aibsrmgohrqmpnpfvlvd.supabase.co"; 
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpYnNybWdvaHJxbXBucGZ2bHZkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MzU2NzIsImV4cCI6MjEwNTAxMTY3Mn0.ZNRFxLA_3CBXx5hqIG6jkZkJKUrX1ELDjeK5e4e2nRg"; 
 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
-        // Kredensial Super Admin Resmi
-        const SUPER_ADMIN_USER = "appslab75@gmail.com";
-        const SUPER_ADMIN_PASS = "CCReza@1275";
-        let isAdminLoggedIn = false;
+        let currentSessionUser = null; 
         let isRegistrationOpen = true;
+        let globalDataPeserta = [];
+        let confirmCallback = null;
 
         document.addEventListener("DOMContentLoaded", () => {
+            // Sinkronisasi ikon
+            const themeBtn = document.getElementById('theme-toggle-btn');
+            if (themeBtn) themeBtn.innerHTML = document.documentElement.classList.contains('dark') ? '☀️' : '🌙';
+
             loadProvinsi();
             cekStatusPendaftaran();
             ambilDataPeserta();
+
+            let savedSession = sessionStorage.getItem('championship_user_session');
+            if (savedSession) {
+                currentSessionUser = JSON.parse(savedSession);
+                terapkanSesiLogin();
+            }
         });
 
-        function showModal(title, message, icon = '👑') {
+        function showModal(title, message, icon = '🏆') {
             document.getElementById('modal-title').textContent = title;
             document.getElementById('modal-message').textContent = message;
             document.getElementById('modal-icon').textContent = icon;
@@ -238,22 +391,52 @@
             document.getElementById('custom-modal').classList.add('hidden');
         }
 
+        function showConfirmModal(title, message, icon, onYes) {
+            document.getElementById('confirm-title').textContent = title;
+            document.getElementById('confirm-message').textContent = message;
+            document.getElementById('confirm-icon').textContent = icon || '⚠️';
+            confirmCallback = onYes;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function tutupConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            confirmCallback = null;
+        }
+
+        document.getElementById('btn-confirm-yes').addEventListener('click', () => {
+            playClickSound();
+            if (confirmCallback) confirmCallback();
+            tutupConfirmModal();
+        });
+
         function switchTab(tab) {
+            playClickSound();
+            document.getElementById('content-daftar').classList.add('hidden');
+            document.getElementById('content-peserta').classList.add('hidden');
+            document.getElementById('content-pengaturan').classList.add('hidden');
+
+            document.getElementById('tab-daftar').className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition";
+            document.getElementById('tab-peserta').className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition";
+            let tabPengaturan = document.getElementById('tab-pengaturan');
+            if(!tabPengaturan.classList.contains('hidden')) {
+                tabPengaturan.className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-600 hover:text-slate-900 transition";
+            }
+
             if(tab === 'daftar') {
                 document.getElementById('content-daftar').classList.remove('hidden');
-                document.getElementById('content-peserta').classList.add('hidden');
-                document.getElementById('tab-daftar').className = "flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn shadow-lg transition";
-                document.getElementById('tab-peserta').className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition";
-            } else {
-                document.getElementById('content-daftar').classList.add('hidden');
+                document.getElementById('tab-daftar').className = "flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn transition";
+            } else if(tab === 'peserta') {
                 document.getElementById('content-peserta').classList.remove('hidden');
-                document.getElementById('tab-peserta').className = "flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn shadow-lg transition";
-                document.getElementById('tab-daftar').className = "flex-1 py-2.5 text-xs font-bold rounded-xl text-slate-400 hover:text-white transition";
+                document.getElementById('tab-peserta').className = "flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn transition";
+                ambilDataPeserta();
+            } else if(tab === 'pengaturan' && currentSessionUser !== null) {
+                document.getElementById('content-pengaturan').classList.remove('hidden');
+                tabPengaturan.className = "flex-1 py-2.5 text-xs font-bold rounded-xl gold-btn transition";
                 ambilDataPeserta();
             }
         }
 
-        // --- CEK STATUS BUKA/TUTUP PENDAFTARAN ---
         async function cekStatusPendaftaran() {
             try {
                 let { data, error } = await supabaseClient.from('pengaturan').select('*').eq('kunci', 'buka_pendaftaran').single();
@@ -261,7 +444,7 @@
                     isRegistrationOpen = data.nilai === 'true';
                 }
             } catch (e) {
-                isRegistrationOpen = true; // Default buka jika belum diset
+                isRegistrationOpen = true;
             }
 
             let banner = document.getElementById('status-pendaftaran-banner');
@@ -274,7 +457,7 @@
                 formWrap.classList.remove('hidden');
                 if(toggleBtn) {
                     toggleBtn.textContent = "Tutup Pendaftaran";
-                    toggleBtn.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-rose-600 text-white hover:bg-rose-500 transition shadow";
+                    toggleBtn.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-rose-700 text-white hover:bg-rose-800 transition shadow-sm";
                     labelToggle.textContent = "Status saat ini: TERBUKA (Publik dapat mendaftar)";
                 }
             } else {
@@ -282,7 +465,7 @@
                 formWrap.classList.add('hidden');
                 if(toggleBtn) {
                     toggleBtn.textContent = "Buka Pendaftaran";
-                    toggleBtn.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 text-white hover:bg-emerald-500 transition shadow";
+                    toggleBtn.className = "px-4 py-2 rounded-xl text-xs font-extrabold bg-emerald-700 text-white hover:bg-emerald-800 transition shadow-sm";
                     labelToggle.textContent = "Status saat ini: DITUTUP (Formulir terkunci)";
                 }
             }
@@ -433,76 +616,134 @@
             if (error) {
                 showModal("Gagal Mengirim", error.message, "❌");
                 btn.disabled = false;
-                btn.textContent = "SUBMIT PENDAFTARAN VVIP";
+                btn.textContent = "SUBMIT PENDAFTARAN";
             } else {
                 showModal("Registrasi Berhasil!", "Data pasangan Anda telah tercatat. Silakan lakukan transfer pembayaran untuk verifikasi.", "🎉");
                 document.getElementById('form-pendaftaran').reset();
                 btn.disabled = false;
-                btn.textContent = "SUBMIT PENDAFTARAN VVIP";
+                btn.textContent = "SUBMIT PENDAFTARAN";
                 switchTab('peserta');
             }
         }
 
-        // --- AMBIL & TAMPILKAN PESERTA ---
-        let globalDataPeserta = [];
-
+        // --- AMBIL & RENDER PESERTA ---
         async function ambilDataPeserta() {
-            let container = document.getElementById('list-peserta');
-            container.innerHTML = '<p class="text-center text-xs text-slate-500 py-6">Memuat direktori peserta...</p>';
+            let containerPublik = document.getElementById('list-peserta-publik');
+            let containerAdmin = document.getElementById('list-peserta-admin');
+            
+            containerPublik.innerHTML = '<p class="text-center text-xs text-slate-400 py-6">Memuat direktori peserta...</p>';
+            if(containerAdmin) containerAdmin.innerHTML = '<p class="text-center text-xs text-slate-400 py-4">Memuat data pengelolaan...</p>';
 
             let { data, error } = await supabaseClient.from('peserta').select('*').order('created_at', { ascending: true });
 
             if (error) {
-                container.innerHTML = `<p class="text-center text-xs text-rose-400">Gagal memuat: ${error.message}</p>`;
+                containerPublik.innerHTML = `<p class="text-center text-xs text-rose-600">Gagal memuat: ${error.message}</p>`;
                 return;
             }
 
             globalDataPeserta = data;
-            let tampilanData = isAdminLoggedIn ? data : data.filter(p => p.status === 'terverifikasi');
+            document.getElementById('info-jumlah-peserta').textContent = `Total ${data.length} Pasangan Terdaftar`;
 
-            document.getElementById('info-jumlah-peserta').textContent = `Total ${tampilanData.length} Pasangan Terdaftar`;
+            renderDataPesertaPublik();
+            renderDataPesertaAdmin();
+        }
 
-            if (tampilanData.length === 0) {
-                container.innerHTML = '<div class="text-center glass-card p-6 rounded-2xl text-slate-400 text-xs">Belum ada data peserta yang ditampilkan.</div>';
+        function formatIdPasangan(id) {
+            return `DOM-${String(id).padStart(3, '0')}`;
+        }
+
+        function renderDataPesertaPublik() {
+            let containerPublik = document.getElementById('list-peserta-publik');
+            let keyword = (document.getElementById('search-peserta')?.value || '').toLowerCase().trim();
+
+            let filtered = globalDataPeserta.filter(p => {
+                let idPasangan = formatIdPasangan(p.id).toLowerCase();
+                return idPasangan.includes(keyword) ||
+                       p.nama_pasangan.toLowerCase().includes(keyword) ||
+                       p.gardu_klub.toLowerCase().includes(keyword) ||
+                       p.kabupaten.toLowerCase().includes(keyword) ||
+                       p.kecamatan.toLowerCase().includes(keyword) ||
+                       p.desa.toLowerCase().includes(keyword);
+            });
+
+            if (filtered.length === 0) {
+                containerPublik.innerHTML = '<div class="text-center glass-card p-6 rounded-2xl text-slate-500 text-xs font-medium">Tidak ada data peserta yang cocok dengan pencarian.</div>';
                 return;
             }
 
-            container.innerHTML = '';
-            tampilanData.forEach((p, index) => {
+            containerPublik.innerHTML = '';
+            filtered.forEach((p) => {
                 let badgeStatus = p.status === 'terverifikasi' 
-                    ? '<span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-full font-extrabold">TERVERIFIKASI VVIP</span>'
-                    : '<span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-1 rounded-full font-extrabold">PENDING PEMBAYARAN</span>';
-
-                let adminActions = '';
-                if (isAdminLoggedIn) {
-                    let tombolUbah = p.status === 'terverifikasi'
-                        ? `<button onclick="ubahStatus(${p.id}, 'pending')" class="text-[10px] bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-lg font-bold border border-amber-500/40">Set Pending</button>`
-                        : `<button onclick="ubahStatus(${p.id}, 'terverifikasi')" class="text-[10px] bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-bold shadow">Approve VVIP</button>`;
-                    let tombolHapus = `<button onclick="hapusPeserta(${p.id})" class="text-[10px] bg-rose-500/20 text-rose-300 hover:bg-rose-500/30 px-3 py-1.5 rounded-lg font-bold border border-rose-500/40">Hapus</button>`;
-                    adminActions = `<div class="mt-3 pt-3 border-t border-slate-800 flex gap-2">${tombolUbah} ${tombolHapus}</div>`;
-                }
+                    ? '<span class="text-[10px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full font-extrabold">PESERTA</span>'
+                    : '<span class="text-[10px] bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full font-extrabold">CALON PESERTA</span>';
 
                 let card = document.createElement('div');
-                card.className = "glass-card p-4 rounded-2xl space-y-2 border border-slate-800 shadow-xl";
+                card.className = "glass-card p-4 rounded-2xl space-y-1.5 border border-slate-200 shadow-sm";
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
-                        <span class="text-xs font-extrabold text-amber-400/80">#${index + 1}</span>
+                        <span class="text-xs font-extrabold text-amber-800 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2.5 py-0.5 rounded-lg border border-amber-200 dark:border-amber-800/50">${formatIdPasangan(p.id)}</span>
                         ${badgeStatus}
                     </div>
                     <div>
-                        <h3 class="text-sm font-extrabold text-white uppercase tracking-wider">${p.nama_pasangan}</h3>
-                        <p class="text-xs font-semibold text-slate-300 mt-0.5">Klub: ${p.gardu_klub}</p>
-                        <p class="text-[11px] text-slate-400 mt-1">Domisili: ${p.desa}, ${p.kecamatan}, ${p.kabupaten}</p>
-                        <p class="text-[11px] text-slate-400">WhatsApp: ${p.whatsapp}</p>
+                        <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-tight">${p.nama_pasangan}</h3>
+                        <p class="text-xs font-semibold text-slate-600">Klub: ${p.gardu_klub}</p>
+                        <p class="text-[10px] text-slate-400 mt-1 font-medium">Domisili: Kab. ${p.kabupaten}, Kec. ${p.kecamatan}, Desa/Kel. ${p.desa}</p>
                     </div>
-                    ${adminActions}
                 `;
-                container.appendChild(card);
+                containerPublik.appendChild(card);
             });
         }
 
-        // --- OTORISASI SUPER ADMIN ---
+        function renderDataPesertaAdmin() {
+            let containerAdmin = document.getElementById('list-peserta-admin');
+            if (!containerAdmin || currentSessionUser === null) return;
+
+            let keyword = (document.getElementById('search-admin')?.value || '').toLowerCase().trim();
+
+            let filtered = globalDataPeserta.filter(p => {
+                let idPasangan = formatIdPasangan(p.id).toLowerCase();
+                return idPasangan.includes(keyword) ||
+                       p.nama_pasangan.toLowerCase().includes(keyword) ||
+                       p.gardu_klub.toLowerCase().includes(keyword) ||
+                       p.kabupaten.toLowerCase().includes(keyword) ||
+                       p.kecamatan.toLowerCase().includes(keyword) ||
+                       p.desa.toLowerCase().includes(keyword);
+            });
+
+            if (filtered.length === 0) {
+                containerAdmin.innerHTML = '<div class="text-center text-slate-400 text-xs py-4">Tidak ada data ditemukan.</div>';
+                return;
+            }
+
+            containerAdmin.innerHTML = '';
+            filtered.forEach((p) => {
+                let badgeStatus = p.status === 'terverifikasi' 
+                    ? '<span class="text-[10px] bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 px-2 py-0.5 rounded-full font-extrabold">PESERTA</span>'
+                    : '<span class="text-[10px] bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 px-2 py-0.5 rounded-full font-extrabold">CALON PESERTA</span>';
+
+                let tombolUbah = p.status === 'terverifikasi'
+                    ? `<button onclick="ubahStatus(${p.id}, 'pending')" class="text-[10px] bg-amber-50 dark:bg-amber-900/20 text-amber-800 dark:text-amber-500 px-3 py-1.5 rounded-lg font-bold border border-amber-200 dark:border-amber-800/50 hover:bg-amber-100 transition">Set Calon</button>`
+                    : `<button onclick="ubahStatus(${p.id}, 'terverifikasi')" class="text-[10px] bg-emerald-700 hover:bg-emerald-800 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm transition">Approve Peserta</button>`;
+                let tombolHapus = `<button onclick="konfirmasiHapusPeserta(${p.id}, '${p.nama_pasangan}')" class="text-[10px] bg-rose-50 dark:bg-rose-900/20 text-rose-700 dark:text-rose-500 hover:bg-rose-100 px-3 py-1.5 rounded-lg font-bold border border-rose-200 dark:border-rose-800/50 transition">Hapus</button>`;
+
+                let item = document.createElement('div');
+                item.className = "bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm";
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <span class="text-[11px] font-extrabold text-amber-800 dark:text-amber-500 bg-amber-50 dark:bg-amber-900/20 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800/50">${formatIdPasangan(p.id)} - ${p.nama_pasangan}</span>
+                        ${badgeStatus}
+                    </div>
+                    <p class="text-[10px] text-slate-600 font-medium">Klub: ${p.gardu_klub} | WA: ${p.whatsapp}</p>
+                    <p class="text-[10px] text-slate-400 font-medium">Domisili: Kab. ${p.kabupaten}, Kec. ${p.kecamatan}, Kel. ${p.desa}</p>
+                    <div class="pt-1 flex gap-2">${tombolUbah} ${tombolHapus}</div>
+                `;
+                containerAdmin.appendChild(item);
+            });
+        }
+
+        // --- SISTEM OTORISASI & LOGIN ---
         function bukaLoginAdmin() {
+            playClickSound();
             document.getElementById('admin-user-input').value = '';
             document.getElementById('admin-password-input').value = '';
             document.getElementById('admin-modal').classList.remove('hidden');
@@ -512,32 +753,138 @@
             document.getElementById('admin-modal').classList.add('hidden');
         }
 
-        function prosesLoginAdmin() {
+        async function prosesLoginAdmin() {
             let usr = document.getElementById('admin-user-input').value.trim();
             let pwd = document.getElementById('admin-password-input').value;
 
-            if (usr === SUPER_ADMIN_USER && pwd === SUPER_ADMIN_PASS) {
-                isAdminLoggedIn = true;
-                tutupAdminModal();
-                document.getElementById('admin-action-container').classList.add('hidden');
-                document.getElementById('panel-admin-tools').classList.remove('hidden');
-                cekStatusPendaftaran();
-                showModal("Akses Diterima", "Selamat datang, Super Admin utama.", "⚡");
-                ambilDataPeserta();
-            } else {
-                showModal("Akses Ditolak", "Username atau Password Super Admin salah.", "❌");
+            if(!usr || !pwd) {
+                showModal("Peringatan", "Username dan Password wajib diisi.", "⚠️");
+                return;
+            }
+
+            let { data, error } = await supabaseClient.from('app_users').select('*').eq('email', usr).single();
+
+            if (error || !data || data.password !== pwd) {
+                showModal("Akses Ditolak", "Username atau Password salah.", "❌");
+                return;
+            }
+
+            currentSessionUser = { email: data.email, role: data.role };
+            sessionStorage.setItem('championship_user_session', JSON.stringify(currentSessionUser));
+            
+            tutupAdminModal();
+            terapkanSesiLogin();
+            showModal("Akses Diterima", `Selamat datang, ${data.role.toUpperCase()}. Menu Pengaturan kini terbuka.`, "⚡");
+            switchTab('pengaturan');
+        }
+
+        function terapkanSesiLogin() {
+            if (!currentSessionUser) return;
+
+            document.getElementById('header-login-btn-container').classList.add('hidden');
+            
+            let tabPengaturan = document.getElementById('tab-pengaturan');
+            tabPengaturan.classList.remove('hidden');
+
+            document.getElementById('info-user-login').textContent = `${currentSessionUser.email} (${currentSessionUser.role.toUpperCase()})`;
+
+            let toggleRegWrap = document.getElementById('wrapper-toggle-reg');
+            let crudAkunSection = document.getElementById('section-manajemen-akun');
+
+            if (currentSessionUser.role === 'super_admin') {
+                document.getElementById('label-role-session').textContent = '⚡ Super Admin Control Center';
+                toggleRegWrap.classList.remove('hidden');
+                crudAkunSection.classList.remove('hidden');
+                document.getElementById('title-crud-akun').textContent = '👥 Kelola Akun Admin Panitia';
+                document.getElementById('badge-target-akun').textContent = 'Target: Admin';
+                document.getElementById('new-user-role').value = 'admin';
+                loadDaftarAkun('admin');
+            } else if (currentSessionUser.role === 'admin') {
+                document.getElementById('label-role-session').textContent = '🛡️ Admin Panitia Control Center';
+                toggleRegWrap.classList.remove('hidden');
+                crudAkunSection.classList.remove('hidden');
+                document.getElementById('title-crud-akun').textContent = '👥 Kelola Akun Operator';
+                document.getElementById('badge-target-akun').textContent = 'Target: Operator';
+                document.getElementById('new-user-role').value = 'operator';
+                loadDaftarAkun('operator');
+            } else if (currentSessionUser.role === 'operator') {
+                document.getElementById('label-role-session').textContent = '⚙️ Operator Control Center';
+                toggleRegWrap.classList.add('hidden');
+                crudAkunSection.classList.add('hidden');
             }
         }
 
         function logoutAdmin() {
-            isAdminLoggedIn = false;
-            document.getElementById('admin-action-container').classList.remove('hidden');
-            document.getElementById('panel-admin-tools').classList.add('hidden');
+            playClickSound();
+            currentSessionUser = null;
+            sessionStorage.removeItem('championship_user_session');
+            
+            document.getElementById('header-login-btn-container').classList.remove('hidden');
+            document.getElementById('tab-pengaturan').classList.add('hidden');
+
             showModal("Keluar", "Sesi administrator telah diakhiri.", "🔒");
-            ambilDataPeserta();
+            switchTab('peserta');
+        }
+
+        // --- MANAJEMEN AKUN & PESERTA ---
+        async function loadDaftarAkun(targetRole) {
+            let container = document.getElementById('list-akun-container');
+            container.innerHTML = '<p class="text-[10px] text-slate-400">Memuat daftar akun...</p>';
+
+            let { data, error } = await supabaseClient.from('app_users').select('*').eq('role', targetRole);
+
+            if (error || !data || data.length === 0) {
+                container.innerHTML = '<p class="text-[10px] text-slate-400">Belum ada akun terdaftar.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            data.forEach(acc => {
+                let item = document.createElement('div');
+                item.className = "flex justify-between items-center bg-slate-50 dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs";
+                item.innerHTML = `
+                    <div>
+                        <p class="font-bold text-slate-800 dark:text-slate-200">${acc.email}</p>
+                        <p class="text-[9px] text-slate-400 font-medium">Role: ${acc.role.toUpperCase()}</p>
+                    </div>
+                    <button onclick="konfirmasiHapusAkun(${acc.id}, '${targetRole}')" class="text-[10px] bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 px-2 py-1 rounded font-bold hover:bg-rose-100 transition border border-rose-200 dark:border-rose-800/50">Hapus</button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        async function buatAkunBaru(e) {
+            e.preventDefault();
+            let email = document.getElementById('new-user-email').value.trim();
+            let password = document.getElementById('new-user-pass').value.trim();
+            let role = document.getElementById('new-user-role').value;
+
+            let { error } = await supabaseClient.from('app_users').insert([{ email, password, role }]);
+
+            if (error) {
+                showModal("Gagal", "Gagal membuat akun: " + error.message, "❌");
+            } else {
+                showModal("Berhasil", `Akun ${role} (${email}) berhasil dibuat.`, "✨");
+                document.getElementById('new-user-email').value = '';
+                document.getElementById('new-user-pass').value = '';
+                loadDaftarAkun(role);
+            }
+        }
+
+        function konfirmasiHapusAkun(id, targetRole) {
+            playClickSound();
+            showConfirmModal("Konfirmasi Hapus Akun", "Yakin ingin menghapus akun ini dari sistem?", "🗑️", async () => {
+                let { error } = await supabaseClient.from('app_users').delete().eq('id', id);
+                if (error) {
+                    showModal("Gagal", error.message, "❌");
+                } else {
+                    loadDaftarAkun(targetRole);
+                }
+            });
         }
 
         async function ubahStatus(id, statusBaru) {
+            playClickSound();
             let { error } = await supabaseClient.from('peserta').update({ status: statusBaru }).eq('id', id);
             if (error) {
                 showModal("Gagal", error.message, "❌");
@@ -546,15 +893,29 @@
             }
         }
 
-        async function hapusPeserta(id) {
-            if (confirm("Yakin ingin menghapus peserta ini dari database?")) {
+        function konfirmasiHapusPeserta(id, namaPasangan) {
+            playClickSound();
+            showConfirmModal("Hapus Peserta", `Yakin ingin menghapus pasangan (${namaPasangan}) dari database?`, "🗑️", async () => {
                 let { error } = await supabaseClient.from('peserta').delete().eq('id', id);
                 if (error) {
                     showModal("Gagal", error.message, "❌");
                 } else {
                     ambilDataPeserta();
                 }
-            }
+            });
+        }
+
+        function konfirmasiResetData() {
+            playClickSound();
+            showConfirmModal("PERINGATAN KERAS", "Apakah Anda yakin ingin menghapus SELURUH data peserta (baik Peserta maupun Calon Peserta)? Tindakan ini permanen dan tidak dapat dibatalkan!", "⚠️", async () => {
+                let { error } = await supabaseClient.from('peserta').delete().neq('id', -999999);
+                if (error) {
+                    showModal("Gagal", "Gagal mereset data: " + error.message, "❌");
+                } else {
+                    showModal("Berhasil Reset", "Seluruh data peserta di database berhasil dikosongkan.", "🧹");
+                    ambilDataPeserta();
+                }
+            });
         }
 
         // --- EXPORT EXCEL ---
@@ -566,6 +927,7 @@
 
             let dataExcel = globalDataPeserta.map((p, idx) => ({
                 "No": idx + 1,
+                "ID Pasangan": formatIdPasangan(p.id),
                 "Nama Pasangan": p.nama_pasangan,
                 "Gardu / Klub": p.gardu_klub,
                 "WhatsApp": p.whatsapp,
@@ -573,14 +935,14 @@
                 "Kabupaten/Kota": p.kabupaten,
                 "Kecamatan": p.kecamatan,
                 "Desa/Kelurahan": p.desa,
-                "Status Pembayaran": p.status.toUpperCase(),
+                "Status": p.status.toUpperCase(),
                 "Tanggal Daftar": p.created_at
             }));
 
             let worksheet = XLSX.utils.json_to_sheet(dataExcel);
             let workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Data VVIP Peserta Domino");
-            XLSX.writeFile(workbook, "Data_VVIP_Domino_Championship.xlsx");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Data Peserta Domino");
+            XLSX.writeFile(workbook, "Data_Domino_Championship.xlsx");
         }
     </script>
 </body>
