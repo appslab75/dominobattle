@@ -1,1 +1,1 @@
-# https://appslab75.github.io/dominobattle/
+# https://appstoyou.github.io/dominobattle/
